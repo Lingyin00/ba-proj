@@ -27,6 +27,7 @@ abbrev HN (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup G := H ⊔ N
 #check QuotientGroup.quotientInfEquivProdNormalizerQuotient
 #check Subgroup.subgroupOf
 #check Nat.card_eq_of_bijective
+
 lemma snd_iso_index (H N : Subgroup G) (hLE : H ≤ N.normalizer) :
     Nat.card (↥H ⧸ N.subgroupOf H) = Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) := by
   sorry -- Next I need to clarify the right ambient type on each level
@@ -53,7 +54,20 @@ theorem inter_of_hallSub_normal_is_Hall_new (H : Subgroup G) (hH : Nat.Coprime H
               Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) * Nat.card (N.subgroupOf (H ⊔ N)) := by
             exact Subgroup.card_eq_card_quotient_mul_card_subgroup (N.subgroupOf (H ⊔ N))
           have hN : Nat.card (N.subgroupOf (H ⊔ N)) = Nat.card N := by
-            sorry -- the cardinality of N shouldn't change, when the ambient type changes
+          -- *the cardinality of N shouldn't change, when the ambient type changes*
+            refine Nat.card_congr ?e
+            -- here should be some isomorphism theorems already in mathlib
+            have hle : N ≤ H ⊔ N := le_sup_right
+            refine
+            { toFun := fun x => ?_
+              invFun := fun n => ?_
+              left_inv := ?_
+              right_inv := ?_ }
+            · exact ⟨x.1.1, x.2⟩
+            · refine ⟨⟨n.1, hle n.2⟩, ?_⟩
+              exact n.2
+            · intro x; rfl
+            · intro n; rfl
           have hn_index : Nat.card (H ⊔ N : Subgroup G) =
               Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) * Nat.card N := by
             rw [hN] at hn_index_in_HN
@@ -66,13 +80,31 @@ theorem inter_of_hallSub_normal_is_Hall_new (H : Subgroup G) (hH : Nat.Coprime H
           -- *using the 2.Isomorphism theorem Index Version*
           rw [snd_iso_index] at card_G_two
           · have : Nat.card ↥(N.subgroupOf H) = Nat.card ↥(H.subgroupOf N) := by
-              sorry --the same idea as above
+              --*the same idea as above, need to look at some lemmas in Mathlib...*
+              refine Nat.card_congr ?_
+              refine {
+                toFun := fun x => ?_
+                invFun := fun n => ?_
+                left_inv := ?_
+                right_inv := ?_
+              }
+              · refine ⟨⟨x.1.1, x.2⟩, x.1.2⟩
+              · refine ⟨⟨n.1.1, n.2⟩, n.1.2⟩
+              · intro x; rfl
+              · intro x; rfl
             rw [← this] at card_G_two
             simp [mul_comm] at card_G_two
             have neq01 : Nat.card ↥(N.subgroupOf H) ≠ 0 := by
-              simpa [Nat.card_eq_fintype_card] using (by sorry) -- this follows from [Fintype G]
+            -- *a better solution?*
+              apply Nat.card_ne_zero.mpr
+              apply And.intro
+              · exact ⟨(1 : ↥(N.subgroupOf H))⟩
+              · infer_instance
             have neq02 : Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) ≠ 0 := by
-              simpa [Nat.card_eq_fintype_card] using (by sorry)
+              apply Nat.card_ne_zero.mpr
+              apply And.intro
+              · exact ⟨(1 : ↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N))⟩
+              · infer_instance
             have hq :
                 H.index * (Nat.card ↥(N.subgroupOf H) *
                 Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N))) =
