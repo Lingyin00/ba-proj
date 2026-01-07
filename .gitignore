@@ -3,6 +3,3 @@
 # Ignore all PDFs
 *.pdf
 .DS_Store
-
-# Ignore my on-going writing
-BachelorThesis/doc/
