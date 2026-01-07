@@ -1,7 +1,7 @@
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
 
 noncomputable section -- on the Prop level
-set_option trace.Meta.synthInstance true
+--set_option trace.Meta.synthInstance true
 /-!
 Exercise 3.4.1 `Abelian Simple Group`
 -- Prove that if G is an abelian simple group then G ≃* Zₚ for some prime p
@@ -19,7 +19,7 @@ lemma finiteCyclic_iff_finiteCarrier (g : G) :
 omit [IsSimpleGroup G] in
 lemma finite_finOrder_zpow (g : G) (hp : ¬orderOf g = 0) :
     Finite (Subgroup.zpowers g) := by
-  simp_all
+  simp_all only [orderOf_eq_zero_iff, not_not, finiteCyclic_iff_finiteCarrier, finite_zpowers]
 
 #check isOfFinOrder_iff_pow_eq_one
 #check isOfFinOrder_iff_zpow_eq_one
