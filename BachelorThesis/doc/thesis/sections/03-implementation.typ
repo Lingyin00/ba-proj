@@ -1,4 +1,4 @@
-= Implementation
+= Part I: Mathematical formalization
 
 == Formalization insight
 

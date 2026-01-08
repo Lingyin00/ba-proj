@@ -28,6 +28,7 @@ abbrev HN (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup G := H ⊔ N
 #check Subgroup.subgroupOf
 #check Nat.card_eq_of_bijective
 
+-- *Second isomorphism theorem (index/cardinality version), likely PR-worthy*
 lemma snd_iso_index (H N : Subgroup G) (hLE : H ≤ N.normalizer) :
     Nat.card (↥H ⧸ N.subgroupOf H) = Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) := by
   sorry -- Next I need to clarify the right ambient type on each level
@@ -56,7 +57,7 @@ theorem inter_of_hallSub_normal_is_Hall_new (H : Subgroup G) (hH : Nat.Coprime H
           have hN : Nat.card (N.subgroupOf (H ⊔ N)) = Nat.card N := by
           -- *the cardinality of N shouldn't change, when the ambient type changes*
             refine Nat.card_congr ?e
-            -- here should be some isomorphism theorems already in mathlib
+            -- here should be some isomorphism theorems already in mathlib?
             have hle : N ≤ H ⊔ N := le_sup_right
             refine
             { toFun := fun x => ?_
@@ -139,5 +140,8 @@ def HNmodNisSubgroup (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup (G 
 /-! Prove that HN ⧸ N is a Hall subgroup of G ⧸ N-/
 theorem CosetsOfQuotientGrpIsHall (H : Subgroup G) (hH : Nat.Coprime H.index (Nat.card H))
     (N : Subgroup G) [N.Normal] :
-    Nat.Coprime (HNmodNisSubgroup H N).index (Nat.card ((HNmodNisSubgroup H N))) := by
+    Nat.Coprime (
+      (H ⊔ N).map (QuotientGroup.mk' N)).index
+      (Nat.card ((H ⊔ N).map (QuotientGroup.mk' N))
+                ) := by
   sorry
