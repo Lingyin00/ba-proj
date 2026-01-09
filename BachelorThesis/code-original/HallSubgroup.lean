@@ -28,9 +28,9 @@ abbrev HN (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup G := H ⊔ N
 #check Subgroup.subgroupOf
 #check Nat.card_eq_of_bijective
 
--- *Second isomorphism theorem (index/cardinality version), likely PR-worthy*
-lemma snd_iso_index (H N : Subgroup G) (hLE : H ≤ N.normalizer) :
-    Nat.card (↥H ⧸ N.subgroupOf H) = Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) := by
+-- *Second isomorphism theorem (cardinality version), likely PR-worthy*
+lemma snd_iso_card (H N : Subgroup G) [N.Normal] :
+    Nat.card (H ⧸ N.subgroupOf H) = Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) := by
   sorry -- Next I need to clarify the right ambient type on each level
 
 /-! Prove that H ⊓ N is a Hall Subgroup of N-/
@@ -79,7 +79,7 @@ theorem inter_of_hallSub_normal_is_Hall_new (H : Subgroup G) (hH : Nat.Coprime H
           rw [h_index] at card_G_one
           rw [card_G_one, hn_index, n_index] at card_G_two
           -- *using the 2.Isomorphism theorem Index Version*
-          rw [snd_iso_index] at card_G_two
+          rw [snd_iso_card] at card_G_two
           · have : Nat.card ↥(N.subgroupOf H) = Nat.card ↥(H.subgroupOf N) := by
               --*the same idea as above, need to look at some lemmas in Mathlib...*
               refine Nat.card_congr ?_
@@ -114,7 +114,6 @@ theorem inter_of_hallSub_normal_is_Hall_new (H : Subgroup G) (hH : Nat.Coprime H
               simpa [mul_comm, mul_left_comm, mul_assoc] using card_G_two
             simp_all only [Nat.card_eq_fintype_card, ne_eq, mul_eq_mul_right_iff, mul_eq_zero,
               or_self, or_false]
-          · exact Subgroup.le_normalizer_of_normal
         exact Dvd.intro_left (H ⊔ N).index (id (Eq.symm hIndex))
       have h : (H.relIndex N).gcd (Nat.card ↥(H ⊓ N)) ∣ H.relIndex N :=
         Nat.gcd_dvd_left _ _

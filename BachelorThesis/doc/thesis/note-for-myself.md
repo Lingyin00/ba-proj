@@ -45,4 +45,9 @@ Hall Subgroup
     - 阐述证明里面technical的点，应该有若干个点
     - why the quotient group version is actually easier
     - An important lemma: the index version of 2nd isomorphism theorem
-3. PR: 待定。
+3. PR: 
+    - 2nd PR preparation:
+        - scope:
+            - add the index version of the second isomorphism theorem(under section `SndIsomorphismThm` in the file `Mathlib.GroupTheory.QuotientGroup.basic`)
+            - add two theorems of which show the consistency of coprime(index, cardinality) under the subgroup lattice operations by using the `Mathlib.GroupTheory.Index` API
+            - maybe: `feat(GroupTheory/Index): index version of second isomorphism theorem and coprime stability lemmas`
