@@ -11,30 +11,40 @@ Exercise 3.3.10 `Hall Subgroup`
 -- then H ⊓ N is a Hall subgroup of N and HN ⧸ N is a Hall subgroup of G ⧸ N.
 -/
 
-variable {G : Type*} [Group G] [Fintype G] (H : Subgroup G) (N : Subgroup G) [N.Normal]
+--variable {G : Type*} [Group G] [Fintype G] (H : Subgroup G) (N : Subgroup G) [N.Normal]
 
 /-! The definition of Hall Group-/
-abbrev IsHallSubgroup (H : Subgroup G) : Prop := Nat.Coprime H.index (Nat.card H)
+abbrev IsHallSubgroup {G : Type*} [Group G] (H : Subgroup G) : Prop :=
+  Nat.Coprime H.index (Nat.card H)
 
 /-! The definition that H ⊓ N is a subgroup of N-/
-abbrev inter_of_subHN (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup N :=
+abbrev inter_of_subHN {G : Type*} [Group G]
+  (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup N :=
   (H ⊓ N).comap N.subtype -- this might be unnecessary by using relIndex from the mathlib def.
-#check H.relIndex N
 
 /-! The definition that H ⊔ N is a subgroup of G-/
-abbrev HN (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup G := H ⊔ N
+abbrev HN {G : Type*} [Group G] (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup G := H ⊔ N
 
 #check QuotientGroup.quotientInfEquivProdNormalizerQuotient
 #check Subgroup.subgroupOf
 #check Nat.card_eq_of_bijective
 
 -- *Second isomorphism theorem (cardinality version), likely PR-worthy*
-lemma snd_iso_card (H N : Subgroup G) [N.Normal] :
+theorem snd_iso_card {G : Type*} [Group G] (H N : Subgroup G) (hLE : H ≤ N.normalizer) :
     Nat.card (H ⧸ N.subgroupOf H) = Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) := by
-  sorry -- Next I need to clarify the right ambient type on each level
+  letI := Subgroup.normal_subgroupOf_of_le_normalizer (H := H) (N := N) hLE
+  letI := Subgroup.normal_subgroupOf_sup_of_le_normalizer (H := H) (N := N) hLE
+  simpa using
+    Nat.card_congr
+      (QuotientGroup.quotientInfEquivProdNormalizerQuotient (H := H) (N := N) hLE).toEquiv
+
+theorem snd_iso_card_normalizer {G : Type*} [Group G] (H N : Subgroup G) [N.Normal] :
+    Nat.card (H ⧸ N.subgroupOf H) = Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) :=
+  snd_iso_card H N Subgroup.le_normalizer_of_normal
 
 /-! Prove that H ⊓ N is a Hall Subgroup of N-/
-theorem inter_of_hallSub_normal_is_Hall_new (H : Subgroup G) (hH : Nat.Coprime H.index (Nat.card H))
+theorem inter_of_hallSub_normal_is_Hall_new {G : Type*} [Group G] [Fintype G] (H : Subgroup G)
+    (hH : Nat.Coprime H.index (Nat.card H))
     (N : Subgroup G) [N.Normal] :
     Nat.Coprime (H.relIndex N) (Nat.card (H ⊓ N : Subgroup G)) := by
   apply (Nat.coprime_iff_gcd_eq_one).mpr
@@ -79,7 +89,7 @@ theorem inter_of_hallSub_normal_is_Hall_new (H : Subgroup G) (hH : Nat.Coprime H
           rw [h_index] at card_G_one
           rw [card_G_one, hn_index, n_index] at card_G_two
           -- *using the 2.Isomorphism theorem Index Version*
-          rw [snd_iso_card] at card_G_two
+          rw [snd_iso_card_normalizer] at card_G_two
           · have : Nat.card ↥(N.subgroupOf H) = Nat.card ↥(H.subgroupOf N) := by
               --*the same idea as above, need to look at some lemmas in Mathlib...*
               refine Nat.card_congr ?_
@@ -133,11 +143,13 @@ theorem inter_of_hallSub_normal_is_Hall_new (H : Subgroup G) (hH : Nat.Coprime H
   exact this
 
 /-! The definition that HN ⧸ N is a subgroup of G ⧸ N-/
-def HNmodNisSubgroup (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup (G ⧸ N) :=
+def HNmodNisSubgroup {G : Type*} [Group G]
+    (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup (G ⧸ N) :=
   (H ⊔ N).map (QuotientGroup.mk' N)
 
 /-! Prove that HN ⧸ N is a Hall subgroup of G ⧸ N-/
-theorem CosetsOfQuotientGrpIsHall (H : Subgroup G) (hH : Nat.Coprime H.index (Nat.card H))
+theorem CosetsOfQuotientGrpIsHall {G : Type*} [Group G]
+    (H : Subgroup G) (hH : Nat.Coprime H.index (Nat.card H))
     (N : Subgroup G) [N.Normal] :
     Nat.Coprime (
       (H ⊔ N).map (QuotientGroup.mk' N)).index
