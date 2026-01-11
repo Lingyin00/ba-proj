@@ -29,7 +29,7 @@ abbrev HN {G : Type*} [Group G] (H : Subgroup G) (N : Subgroup G) [N.Normal] : S
 #check Subgroup.subgroupOf
 #check Nat.card_eq_of_bijective
 
--- *Second isomorphism theorem (cardinality version), likely PR-worthy*
+-- **Second isomorphism theorem (cardinality version)**
 theorem snd_iso_card {G : Type*} [Group G] [Fintype G] (H N : Subgroup G) (hLE : H ≤ N.normalizer) :
     Nat.card (H ⧸ N.subgroupOf H) = Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) := by
   letI := Subgroup.normal_subgroupOf_of_le_normalizer (H := H) (N := N) hLE
@@ -159,7 +159,7 @@ by
   -- **Question: cannot rw directly because of dependent motive??**
   have h1 : (↥(H ⊔ N) ⧸ f.ker) ≃* ↥f.range := QuotientGroup.quotientKerEquivRange f
   have eQuot : (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) ≃* (↥(H ⊔ N) ⧸ f.ker) := by
-  -- using the first isomorphism theorem
+  -- using **the first isomorphism theorem**
     simpa using (QuotientGroup.quotientMulEquivOfEq (G := ↥(H ⊔ N))
       (M := N.subgroupOf (H ⊔ N)) (N := f.ker) hker.symm)
   have e₁ : (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) ≃* ↥f.range :=
@@ -178,7 +178,7 @@ theorem CosetsOfQuotientGrpIsHall {G : Type*} [Group G] [Fintype G]
       (H ⊔ N).map (QuotientGroup.mk' N)).index
       (Nat.card ((H ⊔ N).map (QuotientGroup.mk' N))
                 ) := by
-  -- Goal 1: to prove |G ⧸ N : HN ⧸ N| ∣  |G ∣ N|
+  -- Goal 1: to prove |G ⧸ N : HN ⧸ N| ∣  |G ∣ N|: **the third isomorphism theorem**
   have I : ((H ⊔ N).map (QuotientGroup.mk' N)).index = (H ⊔ N).index := by sorry
   have thisI : ((H ⊔ N).map (QuotientGroup.mk' N)).index ∣ H.index := by sorry
   -- Goal 2: to prove |HN ⧸ N| ∣ |H|
@@ -186,7 +186,7 @@ theorem CosetsOfQuotientGrpIsHall {G : Type*} [Group G] [Fintype G]
     have hcard : Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N))
         = Nat.card ((H ⊔ N).map (QuotientGroup.mk' N)) :=
       card_supQuotient_eq_card_map (H := H) (N := N)
-    have hdiv : Nat.card (H ⧸ N.subgroupOf H) ∣ Nat.card H := by
+    have hdiv : Nat.card (H ⧸ N.subgroupOf H) ∣ Nat.card H := by -- Lagrange theorem
       exact Subgroup.card_quotient_dvd_card (α := H) (s := (N.subgroupOf H))
     have hsnd := snd_iso_card_normalizer (H := H) (N := N)
     simp_all only [Subgroup.mem_map, QuotientGroup.mk'_apply]

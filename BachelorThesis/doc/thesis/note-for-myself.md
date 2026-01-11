@@ -34,6 +34,9 @@ Abelian Simple Group
  - 最终merge
     - 已经跟initial PR commit相差很多，中间经过多次重构。
     - TODO：作为contributer, 我对这次view的，最后的总结？我学到的东西？我观察到的mathlib文化？
+4. 难点总结：
+    - Nat and Integer
+
 
 Hall Subgroup
 ==
@@ -43,8 +46,17 @@ Hall Subgroup
     - why the text book method failed in Lean(HN 阶数公式，Counting on Set level)
     - why factorization in |G| works and preferable
     - 阐述证明里面technical的点，应该有若干个点
+        - the usage of structual lemma (isomorphism lemmas)
+        - finding the right ambient type of group(which subgroup am I dealing with right now)
+        - 绕路: rw failded because of dependent motive(还需要仔细看一下)
+        - group isomorphsim vs. equiv (最后总是有一步toEquiv)
     - why the quotient group version is actually easier
     - An important lemma: the index version of 2nd isomorphism theorem
+    - The whole exercise seems to follow the same pattern: 
+    ```lean4
+    -- 1. using the first/second/third/Lagrange theorem to deal with the structural problem
+    -- 2. then using Nat.card_congr to deal with the cardinality problem, aviod counting directly
+    ```
 3. PR: 
     - 2nd PR preparation:
         - scope:
