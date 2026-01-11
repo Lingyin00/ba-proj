@@ -30,15 +30,15 @@ abbrev HN {G : Type*} [Group G] (H : Subgroup G) (N : Subgroup G) [N.Normal] : S
 #check Nat.card_eq_of_bijective
 
 -- *Second isomorphism theorem (cardinality version), likely PR-worthy*
-theorem snd_iso_card {G : Type*} [Group G] (H N : Subgroup G) (hLE : H ≤ N.normalizer) :
+theorem snd_iso_card {G : Type*} [Group G] [Fintype G] (H N : Subgroup G) (hLE : H ≤ N.normalizer) :
     Nat.card (H ⧸ N.subgroupOf H) = Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) := by
   letI := Subgroup.normal_subgroupOf_of_le_normalizer (H := H) (N := N) hLE
   letI := Subgroup.normal_subgroupOf_sup_of_le_normalizer (H := H) (N := N) hLE
   simpa using
     Nat.card_congr
-      (QuotientGroup.quotientInfEquivProdNormalizerQuotient (H := H) (N := N) hLE).toEquiv
+      (QuotientGroup.quotientInfEquivProdNormalizerQuotient (H := H ) (N := N) hLE).toEquiv
 
-theorem snd_iso_card_normalizer {G : Type*} [Group G] (H N : Subgroup G) [N.Normal] :
+theorem snd_iso_card_normalizer {G : Type*} [Group G] [Fintype G] (H N : Subgroup G) [N.Normal] :
     Nat.card (H ⧸ N.subgroupOf H) = Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) :=
   snd_iso_card H N Subgroup.le_normalizer_of_normal
 
@@ -147,12 +147,47 @@ def HNmodNisSubgroup {G : Type*} [Group G]
     (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup (G ⧸ N) :=
   (H ⊔ N).map (QuotientGroup.mk' N)
 
+lemma card_supQuotient_eq_card_map
+  {G : Type*} [Group G] [Fintype G]
+  (H N : Subgroup G) [N.Normal] :
+  Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) = Nat.card ((H ⊔ N).map (QuotientGroup.mk' N)) :=
+by
+  apply Nat.card_congr
+  let f : ↥(H ⊔ N) →* (G ⧸ N) := (QuotientGroup.mk' N).comp (Subgroup.subtype (H ⊔ N))
+  have hker : f.ker = N.subgroupOf (H ⊔ N) := by aesop
+  have hrange : f.range = (H ⊔ N).map (QuotientGroup.mk' N) := by aesop
+  -- **Question: cannot rw directly because of dependent motive??**
+  have h1 : (↥(H ⊔ N) ⧸ f.ker) ≃* ↥f.range := QuotientGroup.quotientKerEquivRange f
+  have eQuot : (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) ≃* (↥(H ⊔ N) ⧸ f.ker) := by
+  -- using the first isomorphism theorem
+    simpa using (QuotientGroup.quotientMulEquivOfEq (G := ↥(H ⊔ N))
+      (M := N.subgroupOf (H ⊔ N)) (N := f.ker) hker.symm)
+  have e₁ : (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) ≃* ↥f.range :=
+    ((id h1.symm).trans (id eQuot.symm)).symm
+  have eRange : ↥f.range ≃* ↥((H ⊔ N).map (QuotientGroup.mk' N)) := by rw [hrange]
+  have eMul :
+    (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) ≃* ↥((H ⊔ N).map (QuotientGroup.mk' N)) :=
+    e₁.trans eRange
+  exact eMul.toEquiv
+
 /-! Prove that HN ⧸ N is a Hall subgroup of G ⧸ N-/
-theorem CosetsOfQuotientGrpIsHall {G : Type*} [Group G]
+theorem CosetsOfQuotientGrpIsHall {G : Type*} [Group G] [Fintype G]
     (H : Subgroup G) (hH : Nat.Coprime H.index (Nat.card H))
     (N : Subgroup G) [N.Normal] :
     Nat.Coprime (
       (H ⊔ N).map (QuotientGroup.mk' N)).index
       (Nat.card ((H ⊔ N).map (QuotientGroup.mk' N))
                 ) := by
-  sorry
+  -- Goal 1: to prove |G ⧸ N : HN ⧸ N| ∣  |G ∣ N|
+  have I : ((H ⊔ N).map (QuotientGroup.mk' N)).index = (H ⊔ N).index := by sorry
+  have thisI : ((H ⊔ N).map (QuotientGroup.mk' N)).index ∣ H.index := by sorry
+  -- Goal 2: to prove |HN ⧸ N| ∣ |H|
+  have thisII : Nat.card ((H ⊔ N).map (QuotientGroup.mk' N)) ∣ Nat.card H := by
+    have hcard : Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N))
+        = Nat.card ((H ⊔ N).map (QuotientGroup.mk' N)) :=
+      card_supQuotient_eq_card_map (H := H) (N := N)
+    have hdiv : Nat.card (H ⧸ N.subgroupOf H) ∣ Nat.card H := by
+      exact Subgroup.card_quotient_dvd_card (α := H) (s := (N.subgroupOf H))
+    have hsnd := snd_iso_card_normalizer (H := H) (N := N)
+    simp_all only [Subgroup.mem_map, QuotientGroup.mk'_apply]
+  exact Nat.Coprime.of_dvd thisI thisII hH
