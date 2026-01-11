@@ -150,8 +150,7 @@ def HNmodNisSubgroup {G : Type*} [Group G]
 lemma card_supQuotient_eq_card_map
   {G : Type*} [Group G] [Fintype G]
   (H N : Subgroup G) [N.Normal] :
-  Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) = Nat.card ((H ⊔ N).map (QuotientGroup.mk' N)) :=
-by
+  Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) = Nat.card ((H ⊔ N).map (QuotientGroup.mk' N)) := by
   apply Nat.card_congr
   let f : ↥(H ⊔ N) →* (G ⧸ N) := (QuotientGroup.mk' N).comp (Subgroup.subtype (H ⊔ N))
   have hker : f.ker = N.subgroupOf (H ⊔ N) := by aesop
@@ -174,13 +173,16 @@ by
 theorem CosetsOfQuotientGrpIsHall {G : Type*} [Group G] [Fintype G]
     (H : Subgroup G) (hH : Nat.Coprime H.index (Nat.card H))
     (N : Subgroup G) [N.Normal] :
-    Nat.Coprime (
-      (H ⊔ N).map (QuotientGroup.mk' N)).index
-      (Nat.card ((H ⊔ N).map (QuotientGroup.mk' N))
-                ) := by
-  -- Goal 1: to prove |G ⧸ N : HN ⧸ N| ∣  |G ∣ N|: **the third isomorphism theorem**
-  have I : ((H ⊔ N).map (QuotientGroup.mk' N)).index = (H ⊔ N).index := by sorry
-  have thisI : ((H ⊔ N).map (QuotientGroup.mk' N)).index ∣ H.index := by sorry
+    Nat.Coprime ((H ⊔ N).map (QuotientGroup.mk' N)).index
+      (Nat.card ((H ⊔ N).map (QuotientGroup.mk' N))) := by
+  -- Goal 1: to prove |G ⧸ N : HN ⧸ N| ∣  |G ∣ N|:
+  have I : ((H ⊔ N).map (QuotientGroup.mk' N)).index = (H ⊔ N).index := by
+    let f : G →* (G ⧸ N) := QuotientGroup.mk' N
+    have hsurj : Function.Surjective f := by simpa [f] using (QuotientGroup.mk'_surjective N)
+    have hker_le : f.ker ≤ H ⊔ N := by simp [f]
+    simpa [f] using (Subgroup.index_map_eq (H := H ⊔ N) hsurj hker_le)
+  have thisI : ((H ⊔ N).map (QuotientGroup.mk' N)).index ∣ H.index := by
+    simpa [I] using (Subgroup.index_dvd_of_le (le_sup_left : H ≤ H ⊔ N))
   -- Goal 2: to prove |HN ⧸ N| ∣ |H|
   have thisII : Nat.card ((H ⊔ N).map (QuotientGroup.mk' N)) ∣ Nat.card H := by
     have hcard : Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N))
