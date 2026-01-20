@@ -178,7 +178,7 @@
     // margin: (left: 20mm, right: 20mm, top: 15mm, bottom: 20mm),
   )
   set par(leading: 0.75em, justify: true, spacing: 1.2em)
-  set heading(numbering: "1")
+  set heading(numbering: "1.")
   show heading: set block(below: 12pt)
   set list(indent: 1em, spacing: 10pt, tight: false)
   set enum(numbering: "1.", indent: 1em, spacing: 10pt, tight: false)

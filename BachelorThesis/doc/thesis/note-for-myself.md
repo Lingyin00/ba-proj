@@ -53,6 +53,8 @@ Hall Subgroup
     - why the quotient group version is actually easier
     - An important lemma: the index version of 2nd isomorphism theorem
     - The whole exercise seems to follow the same pattern: 
+    - the try of third isomorphism theorem fails because we need (H ⊔ N).Normal which is missing and cannot be derived
+    - 
     ```lean4
     -- 1. using the first/second/third/Lagrange theorem to deal with the structural problem
     -- 2. then using Nat.card_congr to deal with the cardinality problem, aviod counting directly

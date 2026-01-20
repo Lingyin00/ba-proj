@@ -1,4 +1,4 @@
-= Part I: Mathematical formalization
+= Main Part I: Implementation
 
 == Formalization insight
 

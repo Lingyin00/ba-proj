@@ -13,4 +13,6 @@ import Mathlib.Data.Nat.Prime.Defs
     then G contains an element of order p. -/
 theorem exists_orderOf_eq_prime_of_dvd_card {G : Type*} {p : Nat} [Fintype G] [CommGroup G]
     (hp1 : Nat.Prime p) (hp2 : p ∣ Nat.card G) : ∃ x : G, orderOf x = p := by
+  refine Nat.strong_induction_on (Nat.card G) ?_
+  intro n ih
   sorry
