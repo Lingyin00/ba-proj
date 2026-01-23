@@ -1,4 +1,4 @@
-= Main Part I: Implementation
+= Formalization of a Theorem on Abelian Simple Groups(10 Pages)
 
 == Formalization insight
 
@@ -22,3 +22,9 @@ theorem mem_zpowers_pow_iff {g : G} {k : ℤ} :
 - It reveals the fact of the genenration of a subgroup: both side instead of one side
 - In math we don't explicitly clarify whether $k$ in $g ^ k$ an integer or a natural number
 - Formalization forces an explicit choice of index types, revealing implicit assumptions in informal mathematics.
+
+== ???
+TODO
+
+== Mathlib Pull Request
+TODO

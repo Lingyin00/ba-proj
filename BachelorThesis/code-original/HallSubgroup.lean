@@ -1,7 +1,7 @@
 import Mathlib.GroupTheory.Index
 import Init.Data.Nat.Lemmas
 import Mathlib.GroupTheory.QuotientGroup.Basic
-
+import Mathlib.Algebra.Group.Subgroup.Finite
 noncomputable section
 --set_option trace.Meta.synthInstance true
 /-!
@@ -53,10 +53,9 @@ theorem inter_of_hallSub_normal_is_Hall_new {G : Type*} [Group G] [Fintype G] (H
     have h1 : Nat.gcd (H.relIndex N) (Nat.card (H ⊓ N : Subgroup G)) ∣ H.index := by
       have : H.relIndex N ∣ H.index := by
         have hIndex : H.index = (H ⊔ N).index * H.relIndex N := by
-          have card_G_one : Nat.card G = H.index * Nat.card H := by
-            exact Eq.symm (Subgroup.index_mul_card H)
-          have card_G_two : Nat.card G = (H ⊔ N).index * Nat.card (H ⊔ N : Subgroup G):= by
-            exact Eq.symm (Subgroup.index_mul_card (H ⊔ N))
+          -- have card_G_one : Nat.card G = H.index * Nat.card H := Eq.symm (Subgroup.index_mul_card H)
+          have card_G_two : Nat.card G = (H ⊔ N).index * Nat.card (H ⊔ N : Subgroup G):=
+            Eq.symm (Subgroup.index_mul_card (H ⊔ N))
           -- H, HN, N index decomposition
           have h_index : Nat.card H =
               Nat.card (↥H ⧸ N.subgroupOf H) * Nat.card (N.subgroupOf H) := by
@@ -65,20 +64,8 @@ theorem inter_of_hallSub_normal_is_Hall_new {G : Type*} [Group G] [Fintype G] (H
               Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) * Nat.card (N.subgroupOf (H ⊔ N)) := by
             exact Subgroup.card_eq_card_quotient_mul_card_subgroup (N.subgroupOf (H ⊔ N))
           have hN : Nat.card (N.subgroupOf (H ⊔ N)) = Nat.card N := by
-          -- *the cardinality of N shouldn't change, when the ambient type changes*
-            refine Nat.card_congr ?e
-            -- here should be some isomorphism theorems already in mathlib?
             have hle : N ≤ H ⊔ N := le_sup_right
-            refine
-            { toFun := fun x => ?_
-              invFun := fun n => ?_
-              left_inv := ?_
-              right_inv := ?_ }
-            · exact ⟨x.1.1, x.2⟩
-            · refine ⟨⟨n.1, hle n.2⟩, ?_⟩
-              exact n.2
-            · intro x; rfl
-            · intro n; rfl
+            simpa using Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv
           have hn_index : Nat.card (H ⊔ N : Subgroup G) =
               Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) * Nat.card N := by
             rw [hN] at hn_index_in_HN
@@ -86,23 +73,18 @@ theorem inter_of_hallSub_normal_is_Hall_new {G : Type*} [Group G] [Fintype G] (H
           have n_index : Nat.card N =
               H.relIndex N * Nat.card (H.subgroupOf N) := by
             apply Subgroup.card_eq_card_quotient_mul_card_subgroup (H.subgroupOf N)
-          rw [h_index] at card_G_one
-          rw [card_G_one, hn_index, n_index] at card_G_two
+          --rw [h_index] at card_G_one
+          rw [← (Subgroup.index_mul_card H), h_index, hn_index, n_index] at card_G_two
           -- *using the 2.Isomorphism theorem Index Version*
           rw [snd_iso_card_normalizer] at card_G_two
-          · have : Nat.card ↥(N.subgroupOf H) = Nat.card ↥(H.subgroupOf N) := by
-              --*the same idea as above, need to look at some lemmas in Mathlib...*
-              refine Nat.card_congr ?_
-              refine {
-                toFun := fun x => ?_
-                invFun := fun n => ?_
-                left_inv := ?_
-                right_inv := ?_
-              }
-              · refine ⟨⟨x.1.1, x.2⟩, x.1.2⟩
-              · refine ⟨⟨n.1.1, n.2⟩, n.1.2⟩
-              · intro x; rfl
-              · intro x; rfl
+          -- { h ∈ H | h ∈ N }   ≃   { n ∈ N | n ∈ H }
+          · have : (N.subgroupOf H).map H.subtype = (H.subgroupOf N).map N.subtype := by
+              ext
+              aesop
+            have : Nat.card ↥(N.subgroupOf H) = Nat.card ↥(H.subgroupOf N) := by
+              exact Nat.card_congr
+                ⟨fun x => ⟨⟨x.1.1, x.2⟩, x.1.2⟩, fun n => ⟨⟨n.1.1, n.2⟩, n.1.2⟩,
+                  congrFun rfl, congrFun rfl⟩
             rw [← this] at card_G_two
             simp [mul_comm] at card_G_two
             have neq01 : Nat.card ↥(N.subgroupOf H) ≠ 0 := by
@@ -130,8 +112,7 @@ theorem inter_of_hallSub_normal_is_Hall_new {G : Type*} [Group G] [Fintype G] (H
       exact Nat.dvd_trans h this
     have h2 : Nat.gcd (H.relIndex N) (Nat.card (H ⊓ N : Subgroup G)) ∣ Nat.card H := by
       have hLag : Nat.card (H ⊓ N : Subgroup G) ∣ Nat.card H := by
-        apply Subgroup.card_dvd_of_le
-        exact inf_le_left
+        apply Subgroup.card_dvd_of_le inf_le_left
       have hgcd :
           Nat.gcd (H.relIndex N) (Nat.card (H ⊓ N : Subgroup G))∣ Nat.card (H ⊓ N : Subgroup G) :=
         Nat.gcd_dvd_right _ _

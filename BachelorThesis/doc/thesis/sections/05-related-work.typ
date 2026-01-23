@@ -1,4 +1,4 @@
-= Related work
+= Related work(1 page)
 
 - paper : `Growing Mathlib: maintenance of a large scale mathematical library` 
   - the Mizar math library

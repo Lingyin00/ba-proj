@@ -1,4 +1,4 @@
-= Introduction
+= Introduction (2 pages)
 
 - Proof assistant as a general role(could mention some famous work in Rocq)
 - Lean as a special case

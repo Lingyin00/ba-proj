@@ -23,10 +23,10 @@ TODO
 )  
 
 #include("sections/01-introduction.typ")
-#include("sections/07-math.typ")
 #include("sections/02-background.typ")
 #include("sections/03-implementation.typ")
 #include("sections/04-evaluation.typ")
+#include("sections/07-Discussion.typ")
 #include("sections/05-related-work.typ")
 #include("sections/06-conclusion.typ")
   
