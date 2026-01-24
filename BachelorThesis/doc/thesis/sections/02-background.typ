@@ -1,7 +1,10 @@
 = Background (4 Pages)
 == Group Theory
+explain very basic stuffs of group theory
 == Lean 
+explain how to read Lean code(the necessary technical stuffs, which only related to Lean)
 == Mathlib
+explain the following stuffs: 
 === The definition hierachy of group in mathlib
 - *explain* Group definition hierachy in mathlib:
 In mathlib the most basic definition of a group are:
