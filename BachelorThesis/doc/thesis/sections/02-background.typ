@@ -1,9 +1,37 @@
 = Background (4 Pages)
-== Group Theory
-explain very basic stuffs of group theory
-== Lean 
-explain how to read Lean code(the necessary technical stuffs, which only related to Lean)
-== Mathlib
+== Group Theory (1.5 Pages)
+- basic general definition
+- homomorphism
+- subgroup
+  - cyclic group
+  - top/bottom
+- quotient
+- for abelian simple group
+  - abelian
+  - simple
+  - isomorphism
+- for Hall subgroup
+  - normal subgroup
+  - cardinality and index
+  - the lattice structure
+  - the first and the second isomorphism
+== Lean (1 Page)
+Here I introduce the necessary stuffs relating to read lean code.
+
+What is Lean?
+
+Why can we write mathematical proofs in Lean?
+- propositions as types,
+- proofs as terms, curry-howard correspondence
+I could list a theorem to illustrate
+
+How does a group theory theorem looks like and a proof approximately looks like in Lean?
+eg. - keywords like : lemma, theorem, sorry
+    - type annotaion
+    - parameters
+    - theorem statement
+
+== Mathlib (1.5 Pages)
 explain the following stuffs: 
 === The definition hierachy of group in mathlib
 - *explain* Group definition hierachy in mathlib:

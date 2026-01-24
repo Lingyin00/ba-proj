@@ -1,2 +1,4 @@
 = Discussion (1 Page)
-TODO
+what kind of role does Lean play:
+- in learning group Theory?
+- ???
