@@ -237,3 +237,4 @@
   heading("Glossary", level: 2)
   print-glossary(glossary)
 }
+
