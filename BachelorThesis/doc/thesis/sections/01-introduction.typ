@@ -1,4 +1,4 @@
-= Introduction (2 pages)
+= Introduction (1 page)
 
 In recent years, the formalization of mathematical proofs has become an increasingly important topic in both mathematics and computer science (*citation*).
 (*Examples to be added.*) It refers to the process of writing machine-checkable proofs in a proof assistant such as Lean, Rocq, or Isabelle (*citation*). At first glance, this process may appear to be a straightforward translation from pen-and-paper proofs into a formal language. In practice, however, formalization is significantly more involved. It often reveals many hidden steps that are typically carried out implicitly in a mathematician’s head when reasoning informally (*citation*). As a result, even seemingly trivial tasks—such as formulating correct definitions or theorem statements—can require substantial effort (*citation*). More subtly, higher-level decisions, such as choosing an appropriate proof schema, often turn out to be even more demanding (*citation*).
