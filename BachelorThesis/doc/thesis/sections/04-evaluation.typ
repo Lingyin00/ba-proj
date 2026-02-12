@@ -1,13 +1,8 @@
-= Formalization of Two Theorems on Hall Subgroup(6 pages)
+= Formalization of Two Theorems on Hall Subgroup(8 pages)
 
-== Several different options
-
+== Mathematical statement
 TODO
-
-== Why this way particularly
- 
+== API landscape
 TODO
-
-== Bridging with Mathlib
-
+== Choice of proof strategy
 TODO 

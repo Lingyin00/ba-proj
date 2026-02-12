@@ -36,6 +36,7 @@ theorem preImage_normalSubgroup (h : F.Normal) : (F.comap φ).Normal := h.comap 
 -- simpa using Subgroup.Normal.comap (N := H) (f := φ) h
 -- Subgroup.Normal.comap (G := G) (N := H) (H := F) (f := φ) h
 
+
 #check φ.ker
 theorem kernel_of_normalSubgroup : φ.ker.Normal := by exact MonoidHom.normal_ker φ
 end one
