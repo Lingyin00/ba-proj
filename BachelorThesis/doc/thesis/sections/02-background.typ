@@ -1,6 +1,6 @@
 #import "../template.typ": *
 
-= Background (5 Pages)
+= Background (4 Pages)
 
 This section presents the mathematical and technical background necessary for the subsequent formalization, including essential notions from group theory, key mechanisms of Lean, and an overview of the mathlib environment.
 
@@ -8,7 +8,7 @@ This section presents the mathematical and technical background necessary for th
 We recall some basic definitions from group theory.
 
 A _group_ is a set $G$ together with a binary operation
-$dot.op : G times G arrow.r G$ satisfying the following axioms: associativity $(g_1 dot g_2) dot g_3 = g_1 dot (g_2 dot g_3)$, the existence of a neutral element $e_G$ and the existence of an inverse elememt $g^(-1)$ for all $g in G$. If all elements of a group also satisfy commutativity, then it is called _Abelian group_ or _commutative group_. The _cardlinality_ of a group $G$, denoted as $|G|$, is defined as the cardinality of the underlying set. A group is finite if $|G| < infinity$, and infinite otherwise.
+$dot.op : G times G arrow.r G$ satisfying the following axioms: associativity $(g_1 dot g_2) dot g_3 = g_1 dot (g_2 dot g_3)$, the existence of a neutral element $e_G$ and the existence of an inverse elememt $g^(-1)$ for all $g in G$. If all elements of a group also satisfy commutativity, then it is called _Abelian group_ or _commutative group_. The _cardlinality_ of a group $G$, denoted as $|G|$, is defined as the cardinality of the underlying set. A group is finite if $|G| < infinity$, and infinite otherwise. The _order of an element_ $g in G$ is the smallest positive integer $n$ such that $g^n = e_G$, it is infinite if no such integer exist. 
 
 A _group homomorphism_ is a function between groups that preserves the group operation, which means $f : G arrow.r H$  satisfying $f(x dot y) = f(x) dot_H f(y)$ for all $x,y in G$. A homomorphism $g$ is called a left inverse of $f$ if
 $g compose f = id_G$, and a right inverse if
@@ -36,20 +36,15 @@ While Lagrange’s theorem constrains subgroup sizes, the following two isomorph
 
 
 == Lean (1 Page)
-TODO: 
-- add basic knowledge of Lean's type system like Type and Prop
-- To write a theorem is to create an inhabitant in Prop
+Lean is an interactive proof assistant based on _dependent type theory_, in which propositions are represented as types, and proofs correspondent to terms inhabiting these types. This view allows treating mathematical statements and proofs as structured objects that can be manipulated and checked by the system. (*citation*) To keep logical coherence, types in Lean are classified by _universes_ and they have levels. Propositions are living in `Sort 0` while other `Type u` are living in `Sort (u+1)`.
 
-Lean is an interactive proof assistant based on _dependent type theory_, in which propositions are represented as types, and proofs correspondent to terms inhabiting these types. This view allows treating mathematical statements and proofs as structured objects that can be manipulated and checked by the system. (*citation*)
-
-In Lean, a mathematical theorem is introduced by keywords such as `theorem` or `lemma`, followed by a name, a list of parameters, and type annotations of this theorem. A proof is then provided by constructing a term of this type. 
+In Lean, a mathematical theorem is introduced by keywords such as `theorem` or `lemma`, followed by a name, a list of parameters, and type annotations of this theorem. A proof is then provided by constructing a term of this type. It is correct, if its _type checks_. 
 
 As an illustration, we can formulate Lagrange's theorem in Lean as follows:
 ```lean
-theorem lagrange {G : Type*} [Group G] (H : Subgroup G) :
+theorem lagrange {G : Type*} [Group G] [Fintype G] (H : Subgroup G) :
     Fintype.card G /  Fintype.card H = Fintype.card 
-    (a • (H : Set G) : Set G) := by 
-  sorry
+    (a • (H : Set G) : Set G) := by sorry
 ```
 In the example above, `lagrange` is the theorem's name. The expression between the name and colon specify the parameters and assumptions of the theorem. The expression following the colon and colon equals is the type of the theorem. The symbol `:=` introduces the proof, and the code following it constitutes the corresponding proof term. When the keyword `by` is used, the proof is written in tactic mode. Tactics are tools that facilitate the construction of proof terms(*citation Lean language manual*). When a tactic is applied, we could observe in `Info-View` from our editor that the proof state is been modified.
 
@@ -60,7 +55,7 @@ _Type classes_ serve multiple purposes. In this thesis, they are primarily used 
 Note that a mechanism named _coercion_ appears in `(a • (H : Set G) : Set G)` from the theorem statement above. Here, the subgroup `H : Subgroup G` is explicitly coerced to its underlying set `H : Set G`.  Although the coercion is written explicitly in this example, Lean often inserts such coercions automatically during elaboration when a term is used in a context expecting a compatible type.
 For instance, coercions are frequently used to pass from `Nat` to `Int`, or from algebraic structures to their underlying carrier types.
 
-== Mathlib (2.5 Pages)
+== Mathlib (1.5 Pages)
 Rather than being merely a large collection of formalized theorems, mathlib is shaped by a design philosophy centered on abstraction, generalization and systematic reuse through typeclass inference. The library favors small composable lemmas that act as bridges, enabling the construction of more complex results in a modular way(*citation the mathlib paper from Anne*). The design philosophy becomes particularly visible in its algebraic hierarchy, where algebraic structures are not defined independently, but through several layers by using type classes. A representative example is the definition of a group in mathlib:
 ```lean
 class Group (G : Type u) extends DivInvMonoid G where
@@ -72,10 +67,9 @@ class DivInvMonoid (G : Type u) extends Monoid G, Inv G, Div G : Type u
 ```
 It is again a type class inheriting from `Monoid`, while `Inv G` and `Div G` introduce inverse operation and the division without redifining a new `G`. The classes `Inv G` and `Div G` originate from the `Init/Prelude`, the first file in the Lean import hierarchy. This reflects the fact that algebraic hierarchy in mathlib is constructed incrementally from foundational operational structures provided by the core language.
 
-The development of mathlib is a collaborative, commuity-driven process involving contributors from around the world. Contributions are submitted via pull request and undergo rigorous code view by maintainers and viewers. To ensure the quality of code, a pull request often goes through several rounds of refinements, generalizations and modifications before being merged. Consequently, formalization in mathlib is not only a mathematical formalization activity, but also an interaction with an envolving infrastructural system.
+The development of mathlib is a collaborative, community-driven process involving contributors from around the world. Contributions are submitted via pull request and undergo rigorous code view by maintainers and viewers. To ensure the quality of code, a pull request often goes through several rounds of refinements, generalizations and modifications before being merged. Consequently, formalization in mathlib is not only a mathematical formalization activity, but also an interaction with an envolving infrastructural system.
 
 Due to the scale and complexity of the library, efficient navigation becomes an efficient skill in this project. Locating exisiting lemmas is crucial tp avoid duplication and to reuse established results. The mathlib documentaion(*citation the mathlib documentation*) usually serves as the primary entry point. It is organized into thematic cateogries such as `GroupTheory`, `FieldTheory`, each containing several more specialied subtopics. For instance, `Coset`, `Subgroup`, `QuotientGroup` are subtopics under `GroupTheory`. Furthermore, under each subtopic, definitions are collected into section `Defs`, basic theories are placed into `Basic`, and the core results are into other labels. Using the mathlib documentaion to locate a lemma usually need us to know the name of the lemma. While during the formalization process, the name of a lemma might not always be obvious. Tools such as _LeanSearch_ allows us to qury lemmas semantically, while ineratcive tactic like `apply?` could also give us hints. In practice, most commonly needed results already exist within the library; thus, working within mathlib often involves identifying and adapting existing components rather than constructing proofs entirely from scratch.
 
-TODO: the most important infrastructures in this thesis: Subgroup.normal as Prop-class, quotient group instance, coercion between subgroup and group, distinction between AddGroup and MulGroup
 
 

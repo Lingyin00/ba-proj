@@ -137,9 +137,10 @@ lemma card_supQuotient_eq_card_map
   have hker : f.ker = N.subgroupOf (H ⊔ N) := by aesop
   have hrange : f.range = (H ⊔ N).map (QuotientGroup.mk' N) := by aesop
   -- **Question: cannot rw directly because of dependent motive??**
+  -- using **the first isomorphism theorem**
   have h1 : (↥(H ⊔ N) ⧸ f.ker) ≃* ↥f.range := QuotientGroup.quotientKerEquivRange f
   have eQuot : (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) ≃* (↥(H ⊔ N) ⧸ f.ker) := by
-  -- using **the first isomorphism theorem**
+  -- using **isomorphism theorem**
     simpa using (QuotientGroup.quotientMulEquivOfEq (G := ↥(H ⊔ N))
       (M := N.subgroupOf (H ⊔ N)) (N := f.ker) hker.symm)
   have e₁ : (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) ≃* ↥f.range :=
