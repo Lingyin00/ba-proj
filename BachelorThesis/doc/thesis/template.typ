@@ -231,10 +231,10 @@
   bibliography("literature.bib", title: [References])
   pagebreak(weak: true)
 
-  set heading(numbering: "A.1")
-  counter(heading).update(0)
-  heading("Appendix", level: 1)
-  heading("Glossary", level: 2)
-  print-glossary(glossary)
+  //set heading(numbering: "A.1")
+  //counter(heading).update(0)
+  //heading("Appendix", level: 1)
+  //heading("Glossary", level: 2)
+  //print-glossary(glossary)
 }
 

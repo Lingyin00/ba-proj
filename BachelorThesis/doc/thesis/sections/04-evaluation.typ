@@ -1,29 +1,27 @@
 #import "../template.typ": *
-= Formalization of Two Theorems on Hall Subgroups(9 pages)
-In this section, we formalize two theorems describing the behavior of Hall subgroups with respect to normal subgroups - namely under intersection and under forming products with a normal subgroup and passing to the corresponding quotient group. 
+= Formalization of Two Theorems on Hall Subgroups
+In this section, I formalize two theorems describing the behavior of Hall subgroups with respect to normal subgroups - namely under intersection and under forming products with a normal subgroup and passing to the corresponding quotient group. 
 
-While the theorems formalized in this chapter only rely on elementary tools such as index computations and the isomorphism theorems, the broader theory of Hall subgroups is closely connected to the structural analysis of finite groups. In particular, every Sylow subgroup of a group is a Hall subgroup(corresponding to the prime set ${p}$). However unlike Sylow subgroups, Hall subgroups do not necessarily exist in arbitrary finite groups. The alternating group $A_5$, which is simple, provides a classical example where certain $pi$-Hall subgroups fail to exist. As these deeper structural aspects lie beyond the scope of the present thesis, we do not pursue them further here. Interested readers may consult a standard textbook in abstract algebra for additional information.
+While the theorems formalized in this chapter only rely on elementary tools such as index computations and the isomorphism theorems, the broader theory of Hall subgroups is closely connected to the structural analysis of finite groups. In particular, every Sylow subgroup of a group is a Hall subgroup(corresponding to the prime set ${p}$). However unlike Sylow subgroups, Hall subgroups do not necessarily exist in arbitrary finite groups. The alternating group $A_5$, which is simple, provides a classical example where certain $pi$-Hall subgroups fail to exist. As these deeper structural aspects lie beyond the scope of the present thesis, I do not pursue them further here. Interested readers may consult a standard textbook in abstract algebra for additional information.
 
-== Mathematical statement (1 page)
- #theorem[Hall Subgroups][If $H$ is a Hall subgroup of $G$ and $N$ is the normal subgroup of $G$, then $H ⊓ N$ is a Hall subgroup of $N$.]
+== Mathematical statement
 
-One typical textbook proof idea is sketched as follows:
-firstly, since $H inter.sq N$ is a subgroup of $H$, we have $|H inter.sq N| ∣ |H|$ due to Langrage theorem. 
+#theorem[Hall Subgroups][If $H$ is a Hall subgroup of $G$ and $N$ is the normal subgroup of $G$, then $H ⊓ N$ is a Hall subgroup of $N$.]
 
-Since $N$ is a normal subgroup of $G$, and $H N$ is the subgroup of $G$, together with this proposition $|H N| = |H| dot |N| \/|H inter.sq N| $(*citation*), we could get:
-  $|N : H inter.sq N|
-    = |N| \/ |H ∩ N|
-    = |H N| \/ |H|
-    = |H N : H|$. 
-By decompositing the index of $H$ in $G$, we could get: $|G : H| = |G : H N| dot|H N : H|$, so $|H N : H| ∣ |G : H|$. 
+One typical textbook proof is sketched as follows:
+firstly, since $H inter.sq N$ is a subgroup of $H$, I have $|H inter.sq N| ∣ |H|$ due to Langrage theorem. 
 
-Now together with $|H inter.sq N| ∣ |H|$, we have:
+Since $N$ is a normal subgroup of $G$, the product of $H N$ forms a subgroup of $G$. Moreover, this standard result@Dummit gives: $ |H N| = |H| dot |N| \/|H inter.sq N|. $ Rearraging the equation I get: 
+  $ |N : H inter.sq N| = |H N| \/ |H| $ By Lagrange’s theorem, these quotients may be interpreted as indices, thus: $ |N : H inter.sq N| = |H N : H| $
+Next, decompositing the index of $H$ in $G$ gives $ |G : H| = |G : H N| dot|H N : H| $ In particular $ |H N : H| ∣ |G : H| $. 
+
+Now together with $|H inter.sq N| ∣ |H|$, I have:
   $|N : H inter.sq N| ∣ |G : H|$.
 Since $|H|$ and $[G : H]$ is coprime(recall that $H$ is  Hall subgroup), then $|H inter.sq N|, |N : H inter.sq N|$ is also coprime.
  
 #theorem[Hall Subgroups][If $H$ is a Hall subgroup of $G$ and $N$ is the normal subgroup of $G$, then  $H N \/ N$ is a Hall subgroup of $G \/ N$.]
 
-Like it in the proof of the first theorem, we use
+Like it in the proof of the first theorem, I use
   $|H N| = |H| dot |N|\/ |H inter.sq N|$, dividing it by $|N|$ yields
 $|H N\/N| = |H|\/|H inter.sq N|$.
 
@@ -41,9 +39,7 @@ $|G\/N : (H N)\/N| ∣ |G : H|$.
 
 Let $d = gcd(|(H N)\/N|, |G\/N : (H N)\/N|)$. Then $d ∣ |H|$ and $d ∣ |G : H|$, so $d ∣ gcd(|H|, |G : H|) = 1$, since $H$ is Hall in $G$. Thus $d = 1$, and the result follows. 
 
-- TODO: 这个paper proof的总结，到时候再回来写。需要强调的其实是那个proposition。比较Meta地讲讲这到底是怎样一个proposition。
-
-== API landscape (3.5 Pages)
+== API landscape
 === Motivation 
 Compared to the abelian simple case, the Hall formalization requires a richer coordination of APIs. The two theorems express coprimality properties that simultaneously involve subgroup cardinalities and subgroup indices, both of which are represented in `Nat`. While cardinality is straightforward to handle via `Nat.card` for finite types equipped with `Fintype` instance, the treatment of index is more delicate, as it interacts with multiple levels of subgroup structure. 
 
@@ -62,32 +58,206 @@ In mathlib, the standard definition of index is:
 noncomputable def index : ℕ := Nat.card (G ⧸ H)
 ```If $H$ is a subgroup of $G$, its index in $G$ is expressed as `H.index`. This definition reflects the quotient-type perspective, while the classical interpretations such as coset counting and cardinality ratio are recovered through lemmas like Lagrange theorem rather than separate definitions. During the formalization, however, we may rewrite the index into different equivalent forms depending on the context. Certain lemmas are phrased in terms of quotient types, others in terms of cardinality relations, and switching between these forms is often guided by convenience.
 
-Moreover, when working with nested subgroups, such as $H inter.sq K <= K <= G$, we require the index of one subgroup relative to another. For this purpose, mathlib provides the function `relIndex`:
+Moreover, when working with nested subgroups, such as $H inter.sq K <= K <= G$, I require the index of one subgroup relative to another. For this purpose, mathlib provides the function `relIndex`:
 
 ```lean noncomputable def relIndex : ℕ := (H.subgroupOf K).index```
 
-This expresses the index of a subgroup relative to a larger subgroup within the same ambient group. For instance, in our first Hall Subgroup theorem the $|N : H inter.sq N| $ could be written as `H.relIndex N`. 
-=== Subgroup API and lattice structure
-- lattice结构，为什么可以直接写 meet /join, 是因为有一个API的存在, 而且因为normal subgroup
-- 几种不同的表示 H ⊓ N is a subgroup of N 的方法（参考代码）
-  - comap and relIndex, 为什么最后我选择了relIndex, 可以直接在这里进行解释
-=== The first and second isomorphism
-- first isomorphism theorem 和second isomorphism在Lean里面的形态(调查它是因为这个exercise出现在了textbook的这一个章节，这是这两个proof得以证明的关键hints)
-=== Quotient Group
-- QuotientGroup.mk 来表示quotient
-=== Theorem statement
-- 最后展示theorem statement，并且讲明白coercion在这里的重要作用，以及ambient group的重要作用。主要是那个小箭头，为什么是必不可少的。
-== Choice of proof strategy (4 Pages)
-=== theorem 1
-- theorem 1: 结构先行，rewrite 消去。重点解释为什么教材的方法行不通，因为在Set上进行计数
-=== theorem 2
-- theorem 2: 利用Nat.congr, 拿到结构。重点解释为什么quotient反而让形式化变得简单，而不用来处理像前面那么多的结构问题（可能是因为quotient把结构给商掉了？）
-== Summarization (0.5 Page)
-- 数学层面
-counting和同构。计数信息可以从同构得来(theorem 1). 为了证明计数相等，我们可以把问题提升到同构(theorem 2).
-- 逻辑层面
-- 形式化层面
+This expresses the index of a subgroup relative to a larger subgroup within the same ambient group, where `subgroupOf` is a design in Lean which treats $H inter.sq K$ as a subgroup of $K$. As a result, in our first Hall Subgroup theorem the $|N : H inter.sq N| $ could be written as `H.relIndex N`. 
+=== The subgroup API and lattice structure
+One may notice that the intersetion of two subgroups $H$ and $N$ is expressed using the meet operation $inter.sq$ rather than by directly referring to the intersection of their underlying sets. This reflects the fact that `Subgroup G` forms a lattice structure under the subgroup partial order.
 
-#pagebreak()
+Mathlib formalizes this structure in `Mathlib.Algebra.Group.Subgroup.Lattice`, where meet and join correspond to intersection and generated products of subgroups, respectively. As a result, standard subgroup constructions are available as lattice rather than set-theoretic operations. This design is not merely a mathematical convenience but embedded in the library infrastructure. Structural properties of subgroups are therefore preserved at the API level, allowing us to focus on higher-level reasoning instead of repeatedly reconstructing basic subgroup facts.
+
+To illustrate the importance of recognizing this lattice structure, consider a more direct approach one might take before fully exploiting the available API. In our early attempt, I explicitly constructed it the intersection of subgroup $N$ as:
+```lean
+def inter_of_subHN {G : Type*} [Group G]
+    (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup N :=
+  (H ⊓ N).comap N.subtype
+```
+where I use the `comap` and `subtype` manually transport $H inter.sq N$ from the original type Subgrooup $G$ into the ambient group Subgroup $N$. While this construction is mathematically correct and accepted by Lean, it reimplements a structural translation that is already captured by the existing abstraction in mathlib. The manual transport via `comap` becomes unnecessary. The subgroup API, together with the lattice structure and `relIndex`, provides a higher-level interface for reasoning about relative subgroups.  
+
+=== The first and second isomorphism theorem
+Although it is not immediately clear how the first and second isomorphism theorems would enter our formal proof, I examine their formulations in mathlib. The two Hall subgroup lemmas appear as exercises in the same chapter's section of Dummit and Foote (*citation*), which suggests that structural considerations may be relevant to their proof strategy. This motivates a closer inspection of the corresponding formal statements.
+
+In mathlib(*citation*), the first and second isomorphism theorems are represented purely structurally:
+```lean
+@[to_additive /-- The first isomorphism theorem (a definition): the canonical isomorphism between
+`G/(ker φ)` to `range φ`. -/]
+noncomputable def quotientKerEquivRange : G ⧸ ker φ ≃* range φ :=
+  MulEquiv.ofBijective (rangeKerLift φ) 
+  ⟨rangeKerLift_injective φ, rangeKerLift_surjective φ⟩
+
+@[to_additive 
+/-- Noether's second isomorphism theorem. -/]
+noncomputable def quotientInfEquivProdNormalQuotient (H N : Subgroup G) 
+    [hN : N.Normal] :
+    H ⧸ N.subgroupOf H ≃* (H ⊔ N : Subgroup G) ⧸ N.subgroupOf (H ⊔ N) :=
+  quotientInfEquivProdNormalizerQuotient H N le_normalizer_of_normal
+```
+These results articulate structural identifications between quotient groups. However, the Hall subgroup theorems under consideration are statements about indices, divisibility, and coprimality. From this perspective, what I ultimately require are numerical equalities rather than explicit group isomorphisms. In Section 4.3 I will clarify how these structural equivalences inform the development of the formal proof. 
+=== Quotient Group
+In mathlib, a quotient group is defined for a normal subgroup `N : Subgroup G` and `[N.Normal]` via the quotient type `G ⧸ N`:
+```lean
+@[to_additive]
+instance Quotient.group : Group (G ⧸ N) := (QuotientGroup.con N).group
+```
+The notation `G ⧸ N` is introduced via the `HasQuotient` typeclass, provides the quotient as a type. The assumption `[N.Normal]` is required to endow this type with a group structure via instance inference.
+Associated with every normal subgroup is the canonical group homomorphism:
+```lean
+@[to_additive]
+def mk' : G →* G ⧸ N :=
+  MonoidHom.mk' QuotientGroup.mk fun _ _ => rfl
+```
+which maps each element of `G` to its equivalence class in the quotient. These constructions reveal two complementary entry points into quotient group reasoning:
+- *Type-driven entry*: One works directly with the quotient type `G ⧸ N`, relying on instance inference to supply its group structure once `[N.Normal]` is available.
+- *Morphism-driven entry*: Alternatively, one passes through the canonical homomorphism `G →* G ⧸ N`, transporting subgroup information via kernel and image constructions.
+Both viewpoints describe the same mathematical object, but they emphasize different interactions within the library: the type-driven approach proceeds top-down, requesting a quotient group and relying on typeclass inference to provide the necessary structure. The morphism-driven approach follows the traditional mathematical route, constructing the quotient group bottom-up from explicit algebraic data. As discussed in Section 4.2.2, the index of a subgroup is defined via the cardinality of a quotient type `Nat.card (G ⧸ H)`. Consequently, quotient constructions are not merely structural devices: they directly interact with counting invariants. Section 4.3 will clarify how these two entry points cooperate in the formal proof of the Hall subgroup theorems.
+
+== Formal statements and choices of proof strategy
+Conceptually, the Hall condition can be viewed as an arithmetic invariant expressed as $gcd(|H|, |G:H| = 1)$. The first proof shows that coprimality property propagates along the chain $H inter.sq N arrow H arrow G$, while the seond proof is along $H arrow H N arrow G$ via quotient. Both proofs rely on translating the ntersection and product operations into multipilicative relations among indeexs. The key equation $|H N| = |H| dot |N| \/|H inter.sq N|$ serves as a bridge between subgroup-theoretic constructions and arithmetic invariant. Once this bridge is established, the problem reduces to divisibility propagation along index factorizations.
+=== Revisiting the paper proof
+Now I revisit the above argument from a formal perspective.
+
+In this section I present the formal statements of the two Hall subgroup theorems and explain the strategic choices made in their formalization. As discussed in 4.1, both papaer proofs rely on the proposition:$|H N| = |H| dot |N| \/|H inter.sq N|$ which in Lean could be expressed as a statement about the cardinality of the union of left cosets:
+```lean
+lemma card_of_left_cosets (H : Subgroup G) (N : Subgroup G) :
+    Nat.card (⋃ h : H, h • N : Set G) =
+    (Nat.card H * Nat.card N) / Nat.card ((H ∩ N : Set G)) := by
+  sorry
+```
+While this is mathematically faithful, it is technically inconvenient in a formal proof because the counting happens at the level `Set G`. In Lean, `Set G` is defined as a predicate `G → Prop`, so it doesn't carry finiteness or cardinality data directly. To compute the cardinality of a union such as `⋃ h : H, h • N`, one must first reinterpret it as a subtype and provide appropriate `Fintype` or `Finite` instances. 
+
+Rather than pursuing this set-level counting approach, the formal development uses the second isomorphism theorem `quotientInfEquivProdNormalQuotient`, as discussed in 4.2.4,  to get counting information and massage the term into the shape that I want. From the isomorphic structure $H \/ (H inter.sq N) tilde.equiv H N\/ N$, I have $ |H N\/ N| = |H \/ (H inter.sq N)| = |H| \/ |H inter.sq N| $
+
+In the formal development, the Hall condition is expressed as the arithmetic statement
+`Nat.gcd (Nat.card H) H.index = 1`.
+Coprimality is therefore encoded directly as an equality in `ℕ`, and its propagation is realized through explicit divisibility relations such as `X.index ∣ Y.index` and `Nat.card K ∣ Nat.card H`. Rather than reasoning informally about prime factors, the proof transforms a `Nat.gcd = 1` statement along a chain of divisibility lemmas.
+
+From this formal perspective, the stability of the Hall property emerges as a structured arithmetic invariant encoded at the level of natural numbers and transported through subgroup operations, rather than as a consequence of informal counting arguments.
+
+=== The formal proof of the first theorem
+The formal statement of the first Hall subgroup theorem is:
+```lean
+/-! Prove that H ⊓ N is a Hall Subgroup of N-/
+theorem hall_inter_of_normal_is_hall {G : Type*} [Group G] [Fintype G] (H : Subgroup G)
+    (hH : Nat.Coprime H.index (Nat.card H))
+    (N : Subgroup G) [N.Normal] :
+    Nat.Coprime (H.relIndex N) (Nat.card (H ⊓ N : Subgroup G)) := by sorry
+```
+I start from rewriting the coprimality goal using `Nat.coprime_iff_gcd_eq_one`. 
+
+The original target
+```lean
+⊢ (H.relIndex N).Coprime (Nat.card ↥(H ⊓ N))
+```
+is thus transformed into 
+```lean
+⊢ (H.relIndex N).gcd (Nat.card ↥(H ⊓ N)) = 1
+```
+The key idea is not to compute the detail about this gcd explicitly. Instead of analyzing the prime factors of `H.relIndex N` and `|H ⊓ N|`directly, I prove that their gcd divides  `gcd(|G:H|, |H|)`, which equals to $1$ by the Hall subgroup assumption on $H$. Accordingly, the central intermediate goal becomes:
+```lean
+⊢ (H.relIndex N).gcd (Nat.card ↥(H ⊓ N)) ∣ H.index.gcd (Nat.card ↥H)
+```
+From here I establish the divide property into two steps:
+- First, I prove: 
+```lean
+    have h1 : Nat.gcd (H.relIndex N) (Nat.card (H ⊓ N : Subgroup G)) ∣ 
+      H.index := by sorry
+```
+- Second, I prove:
+```lean
+    have h2 : Nat.gcd (H.relIndex N) (Nat.card (H ⊓ N : Subgroup G)) ∣ 
+      Nat.card H := by sorry
+```
+After that this proof could be done by `Nat.dvd_one`.
+
+There're some remarks for the auxillary tools which I have used. In `h2`, the result follows directly from Lagrange theorem, while `h1` need more efforts due to the followling reasons:
+
+Firstly, many lemmas in mathlib describe the index of a normal subgroup inside an ordinary subgroup (e.g. `N.relIndex H`), whereas here I need information about `H.relIndex N`. To bridge this gap, I establish the multiplicative relation:
+```lean
+theorem index_eq_index_sup_mul_relIndex_of_normal {G : Type*} [Group G] 
+    [Fintype G]
+    (H N : Subgroup G) [N.Normal] :
+    H.index = (H ⊔ N).index * H.relIndex N := by sorry
+```
+The above identity reflects the interaction between normality and lattice operations and can be viewed as a cardinal version of the second isomorphism theorem.
+
+Secondly, to support this, I also formalize a cardinal formulation of the second isomorphism:
+```lean
+theorem snd_iso_card_normalizer {G : Type*} [Group G] [Fintype G] 
+    (H N : Subgroup G) [N.Normal] :
+    Nat.card (H ⧸ N.subgroupOf H) = 
+    Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) := by sorry
+```
+This lemma serves as a bridge between the structural isomorphism theorem and the numerical identities required for index computations.
+=== The formal proof of the second theorem
+The formal statement of the second Hall subgroup theorem is:
+```lean
+/-! Prove that HN ⧸ N is a Hall subgroup of G ⧸ N-/
+theorem quo_of_sup_normal_hall_is_hall {G : Type*} [Group G] [Fintype G]
+    (H : Subgroup G) (hH : Nat.Coprime H.index (Nat.card H))
+    (N : Subgroup G) [N.Normal] :
+    Nat.Coprime ((H ⊔ N).map (QuotientGroup.mk' N)).index
+    (Nat.card ((H ⊔ N).map (QuotientGroup.mk' N))) := by sorry
+```
+The formal proof resembles the pen-paper proof in 4.1: under the assumption `Nat.Coprime H.index (Nat.card H)`, the strategy is to prove:
+- new index which is `((H ⊔ N).map (QuotientGroup.mk' N)).index` divides the old index `H.index`
+- new cardinality `Nat.card ((H ⊔ N).map (QuotientGroup.mk' N))` divides the old cardinality `Nat.card H `
+
+Thus the proof skeleton is constructed by two division goals and three proof terms:
+```lean
+  -- equation |G ⧸ N : HN ⧸ N| = |G : HN|:
+  have I : ((H ⊔ N).map (QuotientGroup.mk' N)).index = (H ⊔ N).index := by 
+    sorry
+  -- Goal 1: to prove |G ⧸ N : HN ⧸ N| ∣  |G ∣ N|
+  have thisI : ((H ⊔ N).map (QuotientGroup.mk' N)).index ∣ H.index := by
+    simpa [I] using (Subgroup.index_dvd_of_le (le_sup_left : H ≤ H ⊔ N))
+  -- Goal 2: to prove |HN ⧸ N| ∣ |H|
+  have thisII : Nat.card ((H ⊔ N).map (QuotientGroup.mk' N)) ∣
+       Nat.card H := by 
+    sorry
+  exact Nat.Coprime.of_dvd thisI thisII hH
+```
+The proof of `have I` is done by lemma `Subgroup.index_map_eq`, where I use the canonical quotient map `let f : G →* (G ⧸ N) := QuotientGroup.mk' N` to prove that the index stays the same if I project the elements of `H ⊔ N` into quotient group `G ⧸ N`. After that I use the subgroup relation `H ≤ H ⊔ N` to get our first division. The Proof of `thisII` needs some addtional treatment due to dependent types: the cardinality of a group should stays the same no matter it is seen as a subgroup A or as subgroup B. I use a lemma to establish this property, and present its whole proof here, since there're several points I want to illustrate:
+```lean
+lemma card_supQuotient_eq_card_map
+    {G : Type*} [Group G] [Fintype G]
+    (H N : Subgroup G) [N.Normal] :
+    Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) =
+    Nat.card ((H ⊔ N).map (QuotientGroup.mk' N)) := by
+  apply Nat.card_congr
+  let f : ↥(H ⊔ N) →* (G ⧸ N) :=
+    (QuotientGroup.mk' N).comp (Subgroup.subtype (H ⊔ N))
+  have hker : f.ker = N.subgroupOf (H ⊔ N) := by aesop
+  have hrange : f.range = (H ⊔ N).map (QuotientGroup.mk' N) := by aesop
+  have hIso :
+      (↥(H ⊔ N) ⧸ f.ker) ≃* ↥f.range := 
+    QuotientGroup.quotientKerEquivRange f
+  have hQuot :
+      (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) ≃* (↥(H ⊔ N) ⧸ f.ker) :=
+    QuotientGroup.quotientMulEquivOfEq (G := ↥(H ⊔ N)) 
+    (M := N.subgroupOf (H ⊔ N)) (N := f.ker) hker.symm
+  have hRange : ↥f.range ≃* ↥((H ⊔ N).map (QuotientGroup.mk' N)) := by
+    rw [hrange]
+  exact (hQuot.trans hIso).trans hRange |>.toEquiv
+```
+ Mathematically, the equality $∣(H or N)\/(N inter.sq (H or N))∣=∣(H or N)$ mapped into $G\/N∣$ is an immediate consequence of the first isomorphism theorem.
+However, in Lean this equality   must be obtained by explicitly constructing an equivalence of types. The invocation of `Nat.card_congr` at the beginning of the proof therefore determines the entire strategy. To establish equality of cardinalities, one must:
+- construct the canonical homomorphism, which is:
+```lean let f : ↥(H ⊔ N) →* (G ⧸ N)```
+- identify its kernel and range, I oberserve that in:
+```lean have hker : f.ker = N.subgroupOf (H ⊔ N)```
+
+```lean have hrange : f.range = (H ⊔ N).map (QuotientGroup.mk' N)```
+- apply the formal first isomorphism theorem:  
+```lean
+have hIso : (↥(H ⊔ N) ⧸ f.ker) ≃* ↥f.range :=
+   QuotientGroup.quotientKerEquivRange f```
+- and transport the resulting multiplicative equivalence to a type-level equivalence: 
+```lean
+exact (hQuot.trans hIso).trans hRange |>.toEquiv
+```
+
+
 
  

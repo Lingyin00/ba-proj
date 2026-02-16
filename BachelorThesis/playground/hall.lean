@@ -24,6 +24,10 @@ lemma order_union_of_left_cosets (H : Subgroup G) (N : Subgroup G) :
     Nat.card (⋃ h : H, h • N : Set G) =
     (Nat.card H * Nat.card N) / Nat.card ((H ∩ N : Set G)) := by
   sorry
+
+lemma tryw (H : Subgroup G) (N : Subgroup G) [N.Normal] :
+    Nat.card ((H ∪ N): Set G) = (Nat.card H * Nat.card N) / Nat.card ((H ∩ N : Set G)) := by sorry
+
 /- *vs. computation on structure*-/
 lemma snd_iso_index (H N : Subgroup G) (hLE : H ≤ N.normalizer) :
     Nat.card (↥H ⧸ N.subgroupOf H) = Nat.card (↥(H ⊔ N) ⧸ N.subgroupOf (H ⊔ N)) := by

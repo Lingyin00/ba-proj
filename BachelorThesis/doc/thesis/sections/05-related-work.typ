@@ -1,9 +1,6 @@
-= Related work(1 page)
+= Related work
+The development of large-scale mathematical libraries for proof assistants has been studied extensively in recent years. In the Lean ecosystem, the algebraic hierarchy of mathlib has been analyzed in detail by Anne Baanen in their doctoral thesis@anne. The growth and management of mathlib have been analyzed in the recent paper Growing Mathlib@baanen2025. These works examine the challenges of scalability, abstraction management, and library coherence in a rapidly expanding community-driven project.
 
-- paper : `Growing Mathlib: maintenance of a large scale mathematical library` 
-  - the Mizar math library
-  - Isabelle : strong automation
-  - tooling for check contributions
-   - semantic linter
-  - the deprecation system:
-    - maintaning mathlib involves inchanging code. contributions to one area must dealing with effects of all other areas. 
+Beyond Lean, other proof assistants such as Isabelle and Rocq also have developed substantial libraries of formalized mathematics. The _Mathematical Components_@mathcomp library of Rocq has comprehensive group theory library and provides an interactive and visualised website to illustate the connection and dependencies of its files, where one can see that under `all_solvable`section, section `abelian` connects the section `hall` and `sylow`. This resembles the mathematical theories and provides convenience for users to explore the APIs. While as a proof assistant which does not based on dependent type theory, Isabelle uses its module system _locales_@locales to manage its algebraic system concisely. 
+
+While these works emphasize large-scale library design and formal infrastructure, the present thesis adopts a more focused and located perspective. Rather than studying the global architecture of a mathematical library, it examines in detail how formalization reshapes the internal structure of specific classical arguments in group theory. By concentrating on concrete case studies, it reveals how familiar results are reorganized when expressed through explicit type-theoretic and algebraic interfaces.

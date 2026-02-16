@@ -1,9 +1,6 @@
-= Discussion (1 Page)
-what kind of role does Lean play:
-- in learning group Theory?
-- ???
+= Discussion
+Beyond the formal verification of theorems in group theory, this project highlights the role of proof assistants in shaping mathematical understanding. The formalization process can be viewed as a progression from reading and summarizing an informal argument to abstracting its structural core and reconstructing it in a coherent formal setting. While Lean may initially slow intuitive reasoning, it becomes particularly valuable during abstraction and reconstruction, where precise formulations and hidden structural dependencies must be made explicit.
 
-- using Lean as a playground, play with math 
-- Use of automation, is it good in this formalization project??
-- 形式化教会了我用不同的角度来看待教科书的叙述。比如以拉格朗日定理为例子。很多时候他们说的都是同样的事情，但是信息量不一样。让我们来区分出来，哪些是事实本身，哪些是为了理解而服务的叙述。
-- Through our experinces, proof assistant are beneficial for certain learning stages. Seeing from a learning perspective, we would devide this project as the follwoing stages: reading, summarizing, abstracting/generalizing, applying, re-creating. 然后具体展开叙述每一个stage都对应着什么样的工作，然后proof assistant是如何嵌入以及帮助我们更好的学习的。
+In this project, automation plays only a limited role. The group-theoretic development in mathlib is highly structured and strongly dependent on its existing API. As a result, successful formalization relies primarily on identifying appropriate structural lemmas and understanding the interaction between index computations, lattice operations, and quotient constructions. Tactics such as simp serve mainly as local normalization tools, while broader automation contributes little to the overall architectural design of the proof. Decisive steps—such as establishing divisibility chains or formulating multiplicative index identities—require deliberate structural insight rather than automated search.
+
+More broadly, the formalization of the Hall subgroup theorems illustrates how much structure remains implicit in informal proofs. Formal development forces these dependencies to become explicit and, in doing so, reshapes one’s conceptual understanding of familiar results. The shift from informal reasoning to explicit structural design reveals the compatibility between algebraic hierarchies, index multiplicativity, and quotient constructions that might otherwise remain unnoticed.

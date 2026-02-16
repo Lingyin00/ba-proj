@@ -1,0 +1,8 @@
+= Future work
+The formal development also highlights several directions for further refinement of the existing library.
+
+First, during the treatment of the quotient case, it became necessary to establish multiplicative relations involving `relIndex`, such as `H.relindex = (H ⊔ N).index * H.relIndex N`. which express the interaction between lattice operations and index multiplicativity under normality. While mathlib provides many results relating indices and normal subgroups, a more symmetric and systematic treatment of relative indices could further streamline similar arguments. Developing such lemmas in a more general form may therefore constitute a natural extension of the present work. 
+
+Second, the cardinal formulation of the second isomorphism theorem proved particularly useful in bridging structural isomorphisms and numerical index computations. Results of the form $|H \/ (H inter.sq N)| = |H N \/ N|$ serve as essential connectors between group-theoretic structure and divisibility arguments. A broader collection of cardinal versions of classical isomorphism theorems could facilitate index-based reasoning and simplify formal proofs that rely on compatibility between lattice operations and quotient constructions.
+
+Together, these directions point toward a more systematic integration of lattice-theoretic structure and cardinal arithmetic in the subgroup API, which would benefit future formalizations in finite group theory. 
