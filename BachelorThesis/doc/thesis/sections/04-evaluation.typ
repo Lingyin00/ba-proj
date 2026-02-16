@@ -11,9 +11,9 @@ While the theorems formalized in this chapter only rely on elementary tools such
 One typical textbook proof is sketched as follows:
 firstly, since $H inter.sq N$ is a subgroup of $H$, I have $|H inter.sq N| ∣ |H|$ due to Langrage theorem. 
 
-Since $N$ is a normal subgroup of $G$, the product of $H N$ forms a subgroup of $G$. Moreover, this standard result@Dummit gives: $ |H N| = |H| dot |N| \/|H inter.sq N|. $ Rearraging the equation I get: 
+Since $N$ is a normal subgroup of $G$, the product of $H N$ forms a subgroup of $G$. Moreover, this standard result@Dummit gives: $ |H N| = |H| dot |N| \/|H inter.sq N|. $ Rearranging the equation I get: 
   $ |N : H inter.sq N| = |H N| \/ |H| $ By Lagrange’s theorem, these quotients may be interpreted as indices, thus: $ |N : H inter.sq N| = |H N : H| $
-Next, decompositing the index of $H$ in $G$ gives $ |G : H| = |G : H N| dot|H N : H| $ In particular $ |H N : H| ∣ |G : H| $. 
+Next, decomposing the index of $H$ in $G$ gives $ |G : H| = |G : H N| dot|H N : H| $ In particular $ |H N : H| ∣ |G : H| $. 
 
 Now together with $|H inter.sq N| ∣ |H|$, I have:
   $|N : H inter.sq N| ∣ |G : H|$.
@@ -41,13 +41,13 @@ Let $d = gcd(|(H N)\/N|, |G\/N : (H N)\/N|)$. Then $d ∣ |H|$ and $d ∣ |G : H
 
 == API landscape
 === Motivation 
-Compared to the abelian simple case, the Hall formalization requires a richer coordination of APIs. The two theorems express coprimality properties that simultaneously involve subgroup cardinalities and subgroup indices, both of which are represented in `Nat`. While cardinality is straightforward to handle via `Nat.card` for finite types equipped with `Fintype` instance, the treatment of index is more delicate, as it interacts with multiple levels of subgroup structure. 
+Compared to the abelian simple case, the Hall formalization requires a richer coordination of APIs. The two theorems express coprime properties that simultaneously involve subgroup cardinalities and subgroup indices, both of which are represented in `Nat`. While cardinality is straightforward to handle via `Nat.card` for finite types equipped with `Fintype` instance, the treatment of index is more delicate, as it interacts with multiple levels of subgroup structure. 
 
 In pen-and-paper style mathematics, a subgroup can be viewed simultaneously as a subgroup of several groups without ambiguity. In Lean however, every term carries a specific type. For instance, $H inter.sq N$ may be represented as a term of type `Subgroup G` or `Subgroup N`. Although mathematically equivalent, these are distinct at the type level and Lean treats them differently. Consequently, the choice of ambient group must be fixed during the formalization process.
 
 The choice depends on how well existing APIs compose through coercions and whether additional bridging lemmas are required. If a lemma expects $H inter.sq N$ to inhabit in `Subgroup G` but represented in `Subgroup N`, when coercions do not adequately bridge these representations, additional lemmas are often required to connect them explicitly. Thus, the complexity of the Hall formalization stems not only from the mathematical content, but from the necessity of aligning type-level representations with the available API infrastructure.
 
-The following subsections analyze the APIs that are required to support this coordination.
+The following subsections analyse the APIs that are required to support this coordination.
 === Representation of index
 In mathematics, there're three equivalent perspectives to understand index: 
 - the number of left cosets: $|G : H| = |{g dot H|g in G}|$. 
@@ -64,7 +64,7 @@ Moreover, when working with nested subgroups, such as $H inter.sq K <= K <= G$, 
 
 This expresses the index of a subgroup relative to a larger subgroup within the same ambient group, where `subgroupOf` is a design in Lean which treats $H inter.sq K$ as a subgroup of $K$. As a result, in our first Hall Subgroup theorem the $|N : H inter.sq N| $ could be written as `H.relIndex N`. 
 === The subgroup API and lattice structure
-One may notice that the intersetion of two subgroups $H$ and $N$ is expressed using the meet operation $inter.sq$ rather than by directly referring to the intersection of their underlying sets. This reflects the fact that `Subgroup G` forms a lattice structure under the subgroup partial order.
+One may notice that the intersection of two subgroups $H$ and $N$ is expressed using the meet operation $inter.sq$ rather than by directly referring to the intersection of their underlying sets. This reflects the fact that `Subgroup G` forms a lattice structure under the subgroup partial order.
 
 Mathlib formalizes this structure in `Mathlib.Algebra.Group.Subgroup.Lattice`, where meet and join correspond to intersection and generated products of subgroups, respectively. As a result, standard subgroup constructions are available as lattice rather than set-theoretic operations. This design is not merely a mathematical convenience but embedded in the library infrastructure. Structural properties of subgroups are therefore preserved at the API level, allowing us to focus on higher-level reasoning instead of repeatedly reconstructing basic subgroup facts.
 
@@ -74,7 +74,7 @@ def inter_of_subHN {G : Type*} [Group G]
     (H : Subgroup G) (N : Subgroup G) [N.Normal] : Subgroup N :=
   (H ⊓ N).comap N.subtype
 ```
-where I use the `comap` and `subtype` manually transport $H inter.sq N$ from the original type Subgrooup $G$ into the ambient group Subgroup $N$. While this construction is mathematically correct and accepted by Lean, it reimplements a structural translation that is already captured by the existing abstraction in mathlib. The manual transport via `comap` becomes unnecessary. The subgroup API, together with the lattice structure and `relIndex`, provides a higher-level interface for reasoning about relative subgroups.  
+where I use the `comap` and `subtype` manually transport $H inter.sq N$ from the original type Subgroup $G$ into the ambient group Subgroup $N$. While this construction is mathematically correct and accepted by Lean, it reimplements a structural translation that is already captured by the existing abstraction in mathlib. The manual transport via `comap` becomes unnecessary. The subgroup API, together with the lattice structure and `relIndex`, provides a higher-level interface for reasoning about relative subgroups.  
 
 === The first and second isomorphism theorem
 Although it is not immediately clear how the first and second isomorphism theorems would enter our formal proof, I examine their formulations in mathlib. The two Hall subgroup lemmas appear as exercises in the same chapter's section of Dummit and Foote (*citation*), which suggests that structural considerations may be relevant to their proof strategy. This motivates a closer inspection of the corresponding formal statements.
@@ -114,11 +114,11 @@ which maps each element of `G` to its equivalence class in the quotient. These c
 Both viewpoints describe the same mathematical object, but they emphasize different interactions within the library: the type-driven approach proceeds top-down, requesting a quotient group and relying on typeclass inference to provide the necessary structure. The morphism-driven approach follows the traditional mathematical route, constructing the quotient group bottom-up from explicit algebraic data. As discussed in Section 4.2.2, the index of a subgroup is defined via the cardinality of a quotient type `Nat.card (G ⧸ H)`. Consequently, quotient constructions are not merely structural devices: they directly interact with counting invariants. Section 4.3 will clarify how these two entry points cooperate in the formal proof of the Hall subgroup theorems.
 
 == Formal statements and choices of proof strategy
-Conceptually, the Hall condition can be viewed as an arithmetic invariant expressed as $gcd(|H|, |G:H| = 1)$. The first proof shows that coprimality property propagates along the chain $H inter.sq N arrow H arrow G$, while the seond proof is along $H arrow H N arrow G$ via quotient. Both proofs rely on translating the ntersection and product operations into multipilicative relations among indeexs. The key equation $|H N| = |H| dot |N| \/|H inter.sq N|$ serves as a bridge between subgroup-theoretic constructions and arithmetic invariant. Once this bridge is established, the problem reduces to divisibility propagation along index factorizations.
+Conceptually, the Hall condition can be viewed as an arithmetic invariant expressed as $gcd(|H|, |G:H| = 1)$. The first proof shows that coprimality property propagates along the chain $H inter.sq N arrow H arrow G$, while the second proof is along $H arrow H N arrow G$ via quotient. Both proofs rely on translating the intersection and product operations into multipilicative relations among indexes. The key equation $|H N| = |H| dot |N| \/|H inter.sq N|$ serves as a bridge between subgroup-theoretic constructions and arithmetic invariant. Once this bridge is established, the problem reduces to divisibility propagation along index factorizations.
 === Revisiting the paper proof
 Now I revisit the above argument from a formal perspective.
 
-In this section I present the formal statements of the two Hall subgroup theorems and explain the strategic choices made in their formalization. As discussed in 4.1, both papaer proofs rely on the proposition:$|H N| = |H| dot |N| \/|H inter.sq N|$ which in Lean could be expressed as a statement about the cardinality of the union of left cosets:
+In this section I present the formal statements of the two Hall subgroup theorems and explain the strategic choices made in their formalization. As discussed in 4.1, both paper proofs rely on the proposition:$|H N| = |H| dot |N| \/|H inter.sq N|$ which in Lean could be expressed as a statement about the cardinality of the union of left cosets:
 ```lean
 lemma card_of_left_cosets (H : Subgroup G) (N : Subgroup G) :
     Nat.card (⋃ h : H, h • N : Set G) =
@@ -154,7 +154,7 @@ is thus transformed into
 ```lean
 ⊢ (H.relIndex N).gcd (Nat.card ↥(H ⊓ N)) = 1
 ```
-The key idea is not to compute the detail about this gcd explicitly. Instead of analyzing the prime factors of `H.relIndex N` and `|H ⊓ N|`directly, I prove that their gcd divides  `gcd(|G:H|, |H|)`, which equals to $1$ by the Hall subgroup assumption on $H$. Accordingly, the central intermediate goal becomes:
+The key idea is not to compute the detail about this gcd explicitly. Instead of analysing the prime factors of `H.relIndex N` and `|H ⊓ N|`directly, I prove that their gcd divides  `gcd(|G:H|, |H|)`, which equals to $1$ by the Hall subgroup assumption on $H$. Accordingly, the central intermediate goal becomes:
 ```lean
 ⊢ (H.relIndex N).gcd (Nat.card ↥(H ⊓ N)) ∣ H.index.gcd (Nat.card ↥H)
 ```
@@ -171,7 +171,7 @@ From here I establish the divide property into two steps:
 ```
 After that this proof could be done by `Nat.dvd_one`.
 
-There're some remarks for the auxillary tools which I have used. In `h2`, the result follows directly from Lagrange theorem, while `h1` need more efforts due to the followling reasons:
+There're some remarks for the auxilliary tools which I have used. In `h2`, the result follows directly from Lagrange theorem, while `h1` need more efforts due to the followling reasons:
 
 Firstly, many lemmas in mathlib describe the index of a normal subgroup inside an ordinary subgroup (e.g. `N.relIndex H`), whereas here I need information about `H.relIndex N`. To bridge this gap, I establish the multiplicative relation:
 ```lean
@@ -218,7 +218,7 @@ Thus the proof skeleton is constructed by two division goals and three proof ter
     sorry
   exact Nat.Coprime.of_dvd thisI thisII hH
 ```
-The proof of `have I` is done by lemma `Subgroup.index_map_eq`, where I use the canonical quotient map `let f : G →* (G ⧸ N) := QuotientGroup.mk' N` to prove that the index stays the same if I project the elements of `H ⊔ N` into quotient group `G ⧸ N`. After that I use the subgroup relation `H ≤ H ⊔ N` to get our first division. The Proof of `thisII` needs some addtional treatment due to dependent types: the cardinality of a group should stays the same no matter it is seen as a subgroup A or as subgroup B. I use a lemma to establish this property, and present its whole proof here, since there're several points I want to illustrate:
+The proof of `have I` is done by lemma `Subgroup.index_map_eq`, where I use the canonical quotient map `let f : G →* (G ⧸ N) := QuotientGroup.mk' N` to prove that the index stays the same if I project the elements of `H ⊔ N` into quotient group `G ⧸ N`. After that I use the subgroup relation `H ≤ H ⊔ N` to get our first division. The Proof of `thisII` needs some additional treatment due to dependent types: the cardinality of a group should stays the same no matter it is seen as a subgroup A or as subgroup B. I use a lemma to establish this property, and present its whole proof here, since there're several points I want to illustrate:
 ```lean
 lemma card_supQuotient_eq_card_map
     {G : Type*} [Group G] [Fintype G]

@@ -21,7 +21,6 @@ The first case study resulted in a contribution to mathlib, including a refineme
 
 The second case study analyzes the formal reconstruction of textbook proofs of the Hall subgroup theorems. While the underlying mathematics relies only on elementary index computations and isomorphism theorems, the formalization requires careful coordination of seveal APIs and careful treatments on type correctness. In particular, the Hall condition is treated as a coprimality invariant transported along explicit chains of divisibility relations.
 
-Beyond verifying correctness, the project demonstrates how formalization reshapes mathematical reasoning. Implicit structural steps in informal proofs must be reconstructed explicitly, revealing the algebraic dependencies such as lattice operations, index multiplicativity, and quotient constructions. The thesis thus highlights the dual role of proof assistants as both verification tools and  for education in undergraduate algebra.
   ],
   acknowledgement: [
 TODO

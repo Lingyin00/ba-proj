@@ -8,7 +8,7 @@ import Mathlib.GroupTheory.Index
   first lemma, the cardinality of HN(the union of unique left cosets) is problematic, since
   left coset is defined on set, counting on set arouses non-trival type problems for later proof.
 -/
-set_option trace.Meta.synthInstance true
+
 open scoped Pointwise
 /-*This file contains the scratch during the proof of HallSubgroup.lean*-/
 #check Subgroup.subtype
