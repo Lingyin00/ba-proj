@@ -1,4 +1,4 @@
-= Future work
+= Future Work
 The formal development also highlights several directions for further refinement of the existing library.
 
 First, during the treatment of the quotient case, it became necessary to establish multiplicative relations involving `relIndex`, such as `H.relindex = (H ⊔ N).index * H.relIndex N`. which express the interaction between lattice operations and index multiplicativity under normality. While mathlib provides many results relating indices and normal subgroups, a more symmetric and systematic treatment of relative indices could further streamline similar arguments. Developing such lemmas in a more general form may therefore constitute a natural extension of the present work. 

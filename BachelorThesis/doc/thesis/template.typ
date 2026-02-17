@@ -97,7 +97,13 @@
     #v(1fr)
     Disclaimer
   ]
-  [I confirm that this thesis type is my own work and I have documented all sources and material used.]
+  [Ich erkläre hiermit, dass ich die vorliegende Arbeit selbstständig und nur mit den angegebenen Hilfsmitteln verfasst habe. Alle Passagen, die ich aus einer Literatur oder anderen Quellen übernommen habe, sind eindeutig als Zitate mit Quellenangabe gekennzeichnet.
+Diese gedruckte Fassung ist ein Ausdruck der eingereichten elektronischen Fassung.
+
+I hereby declare that I have written this work independently and only with the aids specified. All passages that I have taken from literature or other sources have been clearly marked as quotations with reference to the source.
+This printed copy is a printout of the submitted electronic copy.
+
+]
   v(10mm)
   grid(
     columns: (250pt, 250pt),
