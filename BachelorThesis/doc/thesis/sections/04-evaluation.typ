@@ -6,7 +6,7 @@ While the theorems formalized in this chapter only rely on elementary tools such
 
 == Mathematical statement
 
-#theorem[Hall Subgroups][If $H$ is a Hall subgroup of $G$ and $N$ is the normal subgroup of $G$, then $H ⊓ N$ is a Hall subgroup of $N$.]
+#theorem[Hall subgroups][If $H$ is a Hall subgroup of $G$ and $N$ is the normal subgroup of $G$, then $H ⊓ N$ is a Hall subgroup of $N$.]
 
 One typical textbook proof is sketched as follows:
 firstly, since $H inter.sq N$ is a subgroup of $H$, I have $|H inter.sq N| ∣ |H|$ due to Langrage theorem. 
@@ -19,7 +19,7 @@ Now together with $|H inter.sq N| ∣ |H|$, I have:
   $|N : H inter.sq N| ∣ |G : H|$.
 Since $|H|$ and $[G : H]$ is coprime(recall that $H$ is  Hall subgroup), then $|H inter.sq N|, |N : H inter.sq N|$ is also coprime.
  
-#theorem[Hall Subgroups][If $H$ is a Hall subgroup of $G$ and $N$ is the normal subgroup of $G$, then  $H N \/ N$ is a Hall subgroup of $G \/ N$.]
+#theorem[Hall subgroups][If $H$ is a Hall subgroup of $G$ and $N$ is the normal subgroup of $G$, then  $H N \/ N$ is a Hall subgroup of $G \/ N$.]
 
 Like it in the proof of the first theorem, I use
   $|H N| = |H| dot |N|\/ |H inter.sq N|$, dividing it by $|N|$ yields
@@ -77,9 +77,9 @@ def inter_of_subHN {G : Type*} [Group G]
 where I use the `comap` and `subtype` manually transport $H inter.sq N$ from the original type Subgroup $G$ into the ambient group Subgroup $N$. While this construction is mathematically correct and accepted by Lean, it reimplements a structural translation that is already captured by the existing abstraction in mathlib. The manual transport via `comap` becomes unnecessary. The subgroup API, together with the lattice structure and `relIndex`, provides a higher-level interface for reasoning about relative subgroups.  
 
 === The first and second isomorphism theorem
-Although it is not immediately clear how the first and second isomorphism theorems would enter our formal proof, I examine their formulations in mathlib. The two Hall subgroup lemmas appear as exercises in the same chapter's section of Dummit and Foote (*citation*), which suggests that structural considerations may be relevant to their proof strategy. This motivates a closer inspection of the corresponding formal statements.
+Although it is not immediately clear how the first and second isomorphism theorems would enter our formal proof, I examine their formulations in mathlib. The two Hall subgroup lemmas appear as exercises in the same chapter's section of Dummit and Foote, which suggests that structural considerations may be relevant to their proof strategy. This motivates a closer inspection of the corresponding formal statements.
 
-In mathlib(*citation*), the first and second isomorphism theorems are represented purely structurally:
+In mathlib, the first and second isomorphism theorems are represented purely structurally:
 ```lean
 @[to_additive /-- The first isomorphism theorem (a definition): the canonical isomorphism between
 `G/(ker φ)` to `range φ`. -/]
@@ -146,7 +146,7 @@ theorem hall_inter_of_normal_is_hall {G : Type*} [Group G] [Fintype G] (H : Subg
 ```
 I start from rewriting the coprimality goal using `Nat.coprime_iff_gcd_eq_one`. 
 
-The original target
+The original goal
 ```lean
 ⊢ (H.relIndex N).Coprime (Nat.card ↥(H ⊓ N))
 ```
@@ -244,18 +244,25 @@ lemma card_supQuotient_eq_card_map
  Mathematically, the equality $∣(H or N)\/(N inter.sq (H or N))∣=∣(H or N)$ mapped into $G\/N∣$ is an immediate consequence of the first isomorphism theorem.
 However, in Lean this equality   must be obtained by explicitly constructing an equivalence of types. The invocation of `Nat.card_congr` at the beginning of the proof therefore determines the entire strategy. To establish equality of cardinalities, one must:
 - construct the canonical homomorphism, which is:
-```lean let f : ↥(H ⊔ N) →* (G ⧸ N)```
+```lean 
+      let f : ↥(H ⊔ N) →* (G ⧸ N)
+```
 - identify its kernel and range, I oberserve that in:
-```lean have hker : f.ker = N.subgroupOf (H ⊔ N)```
+```lean 
+      have hker : f.ker = N.subgroupOf (H ⊔ N)
+```
 
-```lean have hrange : f.range = (H ⊔ N).map (QuotientGroup.mk' N)```
+```lean
+      have hrange : f.range = (H ⊔ N).map (QuotientGroup.mk' N)
+```
 - apply the formal first isomorphism theorem:  
 ```lean
-have hIso : (↥(H ⊔ N) ⧸ f.ker) ≃* ↥f.range :=
-   QuotientGroup.quotientKerEquivRange f```
+      have hIso : (↥(H ⊔ N) ⧸ f.ker) ≃* ↥f.range :=
+        QuotientGroup.quotientKerEquivRange f
+```
 - and transport the resulting multiplicative equivalence to a type-level equivalence: 
 ```lean
-exact (hQuot.trans hIso).trans hRange |>.toEquiv
+      exact (hQuot.trans hIso).trans hRange |>.toEquiv
 ```
 
 

@@ -23,7 +23,15 @@ The second case study analyzes the formal reconstruction of textbook proofs of t
 
   ],
   acknowledgement: [
-TODO
+I would like to thank Prof. Dr. Jasmin Blanchette for his excellent teaching, which introduced me to the field of interactive theorem proving.
+
+I would like to thank my advisor Xavier Généreux for his generous support, great patience and encouragemet throughout this whole project. 
+
+I would like to thank two of my fellow students Henrik Böving and Daniel Soukup, for their support during my final bachelor year. I also thank Henrik for generously sharing his knowledge of Lean, for reading the earliest draft of this thesis and giving many valuable suggestions.
+
+Deep thanks to my parents for their unconditional love, and to my good friends Baoyi, Hongbo, Linjing,  Marie, Mona, Ni Nan, and Ziqing, for simply being around.
+
+Special thanks to Daniel Tanzer and the Faction Ski community.
   ],
 )  
 
