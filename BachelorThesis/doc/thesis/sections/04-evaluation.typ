@@ -5,27 +5,34 @@ In this section, I formalize two theorems describing the behavior of Hall subgro
 While the theorems formalized in this chapter only rely on elementary tools such as index computations and the isomorphism theorems, the broader theory of Hall subgroups is closely connected to the structural analysis of finite groups. In particular, every Sylow subgroup of a group is a Hall subgroup(corresponding to the prime set ${p}$). However unlike Sylow subgroups, Hall subgroups do not necessarily exist in arbitrary finite groups. The alternating group $A_5$, which is simple, provides a classical example where certain $pi$-Hall subgroups fail to exist. As these deeper structural aspects lie beyond the scope of the present thesis, I do not pursue them further here. Interested readers may consult a standard textbook in abstract algebra for additional information.
 
 == Mathematical Statement
+There're three definitions used in the following theorems and their proofs.
+
+#definition[$H inter.sq N$][Let $G$ be a group and let $H,N ≤ G$. The intersection of $H$ and $N$ is defined as $H inter.sq N := {g in G| g in H, g in N}$. It is again a subgroup of $G$.] 
+
+#definition[$H N$][Let $G$ be a group and let $H,N ≤ G$. The product of $H$ and $N$ is defined as $H N := {h n| h in H, n in N}$. In general, $H N$ is only a subset of $G$. If $N$ is normal in $G$, then $H N$ is a subgroup of $G$.]
+
+#definition[Subgroup chain][If $H$ and $N$ are both subgroups of $G$, and $N$ is also a normal subgroup of $G$, then we have  subgroup chains where $H inter.sq N$ $≤ H ≤ H N ≤ G$ and $H inter.sq N$ $≤ N ≤ H N ≤ G$.]
 
 #theorem[Hall subgroups][If $H$ is a Hall subgroup of $G$ and $N$ is the normal subgroup of $G$, then $H ⊓ N$ is a Hall subgroup of $N$.]
 
 One typical textbook proof is sketched as follows:
-firstly, since $H inter.sq N$ is a subgroup of $H$, I have $|H inter.sq N| ∣ |H|$ due to Langrage theorem. 
+firstly, since $H inter.sq N$ is a subgroup of $H$, we have $|H inter.sq N| ∣ |H|$ due to Langrage theorem. 
 
-Since $N$ is a normal subgroup of $G$, the product of $H N$ forms a subgroup of $G$. Moreover, this standard result@Dummit gives: $ |H N| = |H| dot |N| \/|H inter.sq N|. $ Rearranging the equation I get: 
+Since $N$ is a normal subgroup of $G$, the product of $H N$ forms a subgroup of $G$. Moreover, this standard result@Dummit gives: $ |H N| = |H| dot |N| \/|H inter.sq N|. $ Rearranging the equation we get: 
   $ |N : H inter.sq N| = |H N| \/ |H| $ By Lagrange’s theorem, these quotients may be interpreted as indices, thus: $ |N : H inter.sq N| = |H N : H| $
 Next, decomposing the index of $H$ in $G$ gives $ |G : H| = |G : H N| dot|H N : H| $ In particular $ |H N : H| ∣ |G : H| $. 
 
-Now together with $|H inter.sq N| ∣ |H|$, I have:
+Now together with $|H inter.sq N| ∣ |H|$, we have:
   $|N : H inter.sq N| ∣ |G : H|$.
 Since $|H|$ and $[G : H]$ is coprime(recall that $H$ is  Hall subgroup), then $|H inter.sq N|, |N : H inter.sq N|$ is also coprime.
  
 #theorem[Hall subgroups][If $H$ is a Hall subgroup of $G$ and $N$ is the normal subgroup of $G$, then  $H N \/ N$ is a Hall subgroup of $G \/ N$.]
 
-Like it in the proof of the first theorem, I use
+Like it in the proof of the first theorem, we use
   $|H N| = |H| dot |N|\/ |H inter.sq N|$, dividing it by $|N|$ yields
 $|H N\/N| = |H|\/|H inter.sq N|$.
 
-Since $H ∩ N ≤ H$, Lagrange’s theorem gives $|H ∩ N| ∣ |H|$, 
+Since $H inter.sq N ≤ H$, Lagrange’s theorem gives $|H inter.sq N| ∣ |H|$, 
 so in particular
 $|(H N)\/N| ∣ |H|$.
 
@@ -171,7 +178,7 @@ From here I establish the divide property into two steps:
 ```
 After that this proof can be done by `Nat.dvd_one`.
 
-There're some remarks for the auxilliary tools which I have used. In `h2`, the result follows directly from Lagrange theorem, while `h1` need more efforts due to the followling reasons:
+There're some remarks for the auxiliary tools which I have used. In `h2`, the result follows directly from Lagrange theorem, while `h1` need more efforts due to the followling reasons:
 
 Firstly, many lemmas in mathlib describe the index of a normal subgroup inside an ordinary subgroup (e.g. `N.relIndex H`), whereas here I need information about `H.relIndex N`. To bridge this gap, I establish the multiplicative relation:
 ```lean
