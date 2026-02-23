@@ -32,18 +32,75 @@ publisher = {Springer-Verlag},
 address = {Berlin, Heidelberg}
 }
 
-@phdthesis{anne,
-title = "Formalizing Fundamental Algebraic Number Theory",
-abstract = "The research described in my thesis involves the extension and maintenance of the library of formal mathematics Mathlib for the interactive theorem prover Lean. The process of mechanization that results in formal mathematics rests on a detailed, uniform and unambiguous translation of mathematical knowledge. Thus, it requires suitable design choices, which needs a thorough understanding of the functionality provided by Lean. After giving a general overview of Lean and Mathlib, the thesis extensively covers a specific mechanism of Lean: the instance parameter. This makes possible the design pattern of typeclasses. Related mechanisms for organizing mathematical structures can be found in many other interactive theorem provers. Based on characteristic practical examples, I describe a variety of design choices that help in applying this functionality. Based on this research, changes and additions were made to Mathlib, also on fundamental levels. Many of the design choices are also applied in the subsequent chapters. After this follows a part of the thesis with the emphasis on formal mathematics, beginning with an overview of the mathematics that is covered. As part of a dynamically changing group of contributors, I worked on formalizing subjects that lie at the basis of algebraic number theory, and these formalizations have since been added to Mathlib. An important theme of this chapter is that it becomes possible to treat different occurences of the same situation in an equal manner, if the right formulation is chosen. Next, we apply the previous work to the solution of concrete problems, namely the formal computation of class numbers and a formal description of all integer solutions to certain Diophantine equations. This required us to face the challenge of writing down definitions that are useful both in the case of high abstraction, and when very specific objects are involved. Computing the desired properties for now remains a matter of manually applying calculation steps, although computer algebra systems can supply the outcome (without a formal proof) within mere moments. Finally, I describe proof tactics I developed, that make it possible to automatically prove certain classes of equalities in the study of rings. By applying these, many manual and tedious calculation steps can be left to the computer. The outcome of this research was not merely to extend the list of theorems available in Mathlib, but to enrich the possibilities of effectively formalizing mathematics.",
-keywords = "formal math, dependent type theory, algebraic number theory, commutative algebra, algebraic hierarchy, Lean, Mathlib",
-author = "Anne Baanen",
-year = "2024",
-month = jan,
-day = "29",
-doi = "10.5463/thesis.541",
-language = "English",
-type = "PhD-Thesis - Research and graduation internal",
-school = "Vrije Universiteit Amsterdam",
+@inproceedings{feit-thompson,
+author = {Gonthier, Georges and Asperti, Andrea and Avigad, Jeremy and Bertot, Yves and Cohen, Cyril and Garillot, Fran\c{c}ois and Le Roux, St\'{e}phane and Mahboubi, Assia and O'Connor, Russell and Biha, Sidi Ould and Pasca, Ioana and Rideau, Laurence and Solovyev, Alexey and Tassi, Enrico and Th\'{e}ry, Laurent},
+title = {A machine-checked proof of the odd order theorem},
+year = {2013},
+isbn = {9783642396335},
+publisher = {Springer-Verlag},
+address = {Berlin, Heidelberg},
+url = {https://doi.org/10.1007/978-3-642-39634-2_14},
+doi = {10.1007/978-3-642-39634-2_14},
+abstract = {This paper reports on a six-year collaborative effort that culminated in a complete formalization of a proof of the Feit-Thompson Odd Order Theorem in the Coq proof assistant. The formalized proof is constructive, and relies on nothing but the axioms and rules of the foundational framework implemented by Coq. To support the formalization, we developed a comprehensive set of reusable libraries of formalized mathematics, including results in finite group theory, linear algebra, Galois theory, and the theories of the real and complex algebraic numbers.},
+booktitle = {Proceedings of the 4th International Conference on Interactive Theorem Proving},
+pages = {163–179},
+numpages = {17},
+location = {Rennes, France},
+series = {ITP'13}
+}
+
+@inproceedings{wadler,
+author = {Wadler, P. and Blott, S.},
+title = {How to make ad-hoc polymorphism less ad hoc},
+year = {1989},
+isbn = {0897912942},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/75277.75283},
+doi = {10.1145/75277.75283},
+abstract = {This paper presents type classes, a new approach to ad-hoc polymorphism. Type classes permit overloading of arithmetic operators such as multiplication, and generalise the “eqtype variables” of Standard ML. Type classes extend the Hindley/Milner polymorphic type system, and provide a new approach to issues that arise in object-oriented programming, bounded type quantification, and abstract data types. This paper provides an informal introduction to type classes, and defines them formally by means of type inference rules.},
+booktitle = {Proceedings of the 16th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
+pages = {60–76},
+numpages = {17},
+location = {Austin, Texas, USA},
+series = {POPL '89}
+}
+
+@article{use-and-abuse,
+author = {Baanen, Anne},
+title = {Use and Abuse of Instance Parameters in the Lean Mathematical Library: Use and Abuse of Instance Parameters...},
+year = {2024},
+issue_date = {Mar 2025},
+publisher = {Springer-Verlag},
+address = {Berlin, Heidelberg},
+volume = {69},
+number = {1},
+issn = {0168-7433},
+url = {https://doi.org/10.1007/s10817-024-09712-7},
+doi = {10.1007/s10817-024-09712-7},
+abstract = {The Lean mathematical library Mathlib features extensive use of the typeclass pattern for organising mathematical structures, based on Lean’s mechanism of instance parameters. Related mechanisms for typeclasses are available in other provers including Agda, Coq and Isabelle with varying degrees of adoption. This paper analyses representative examples of design patterns involving instance parameters in the finalized Lean 3 version of Mathlib, focussing on complications arising at scale and how the Mathlib community deals with them.},
+journal = {J. Autom. Reason.},
+month = dec,
+numpages = {30},
+keywords = {Formalization of mathematics, Dependent type theory, Typeclasses, Algebraic hierarchy, Lean prover}
+}
+
+@inproceedings{mathlib_paper,
+author = {The mathlib Community},
+title = {The lean mathematical library},
+year = {2020},
+isbn = {9781450370974},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3372885.3373824},
+doi = {10.1145/3372885.3373824},
+abstract = {This paper describes mathlib, a community-driven effort to build a unified library of mathematics formalized in the Lean proof assistant. Among proof assistant libraries, it is distinguished by its dependently typed foundations, focus on classical mathematics, extensive hierarchy of structures, use of large- and small-scale automation, and distributed organization. We explain the architecture and design decisions of the library and the social organization that has led to its development.},
+booktitle = {Proceedings of the 9th ACM SIGPLAN International Conference on Certified Programs and Proofs},
+pages = {367–381},
+numpages = {15},
+keywords = {Lean, formal library, formal proof, mathlib},
+location = {New Orleans, LA, USA},
+series = {CPP 2020}
 }
 
 @misc{mathlib,
@@ -74,6 +131,15 @@ school = "Vrije Universiteit Amsterdam",
   note         = {Accessed 16 February 2026}
 }
 
+@article{Avigad2018,
+author = "Jeremy Avigad and Leonardo  de Moura and Soonho  Kong",
+title = "{Theorem Proving in Lean}",
+year = "2018",
+month = "6",
+url = "https://kilthub.cmu.edu/articles/journal_contribution/Theorem_Proving_in_Lean/6492902",
+doi = "10.1184/R1/6492902.v1"
+}
+
 @misc{baanen2025,
       title={Growing Mathlib: maintenance of a large scale mathematical library}, 
       author={Anne Baanen and Matthew Robert Ballard and Johan Commelin and Bryan Gin-ge Chen and Michael Rothgang and Damiano Testa},
@@ -82,6 +148,13 @@ school = "Vrije Universiteit Amsterdam",
       archivePrefix={arXiv},
       primaryClass={cs.PL},
       url={https://arxiv.org/abs/2508.21593}, 
+}
+
+@misc{undergrad_math,
+  title        = {Undergraduate mathematics in mathlib},
+  year         = {2026},
+  url= {https://leanprover-community.github.io/undergrad.html},
+  note         = {Accessed 19 February 2026}
 }
 
 @misc{doc_mathlib,
@@ -126,6 +199,30 @@ numpages = {14},
 keywords = {Lean, deductive verification, interactive theorem proving, proof search, tactic, type theory},
 location = {Boston, MA, USA},
 series = {CPP 2023}
+}
+
+@phdthesis{anne,
+title = "Formalizing Fundamental Algebraic Number Theory",
+abstract = "The research described in my thesis involves the extension and maintenance of the library of formal mathematics Mathlib for the interactive theorem prover Lean. The process of mechanization that results in formal mathematics rests on a detailed, uniform and unambiguous translation of mathematical knowledge. Thus, it requires suitable design choices, which needs a thorough understanding of the functionality provided by Lean. After giving a general overview of Lean and Mathlib, the thesis extensively covers a specific mechanism of Lean: the instance parameter. This makes possible the design pattern of typeclasses. Related mechanisms for organizing mathematical structures can be found in many other interactive theorem provers. Based on characteristic practical examples, I describe a variety of design choices that help in applying this functionality. Based on this research, changes and additions were made to Mathlib, also on fundamental levels. Many of the design choices are also applied in the subsequent chapters. After this follows a part of the thesis with the emphasis on formal mathematics, beginning with an overview of the mathematics that is covered. As part of a dynamically changing group of contributors, I worked on formalizing subjects that lie at the basis of algebraic number theory, and these formalizations have since been added to Mathlib. An important theme of this chapter is that it becomes possible to treat different occurences of the same situation in an equal manner, if the right formulation is chosen. Next, we apply the previous work to the solution of concrete problems, namely the formal computation of class numbers and a formal description of all integer solutions to certain Diophantine equations. This required us to face the challenge of writing down definitions that are useful both in the case of high abstraction, and when very specific objects are involved. Computing the desired properties for now remains a matter of manually applying calculation steps, although computer algebra systems can supply the outcome (without a formal proof) within mere moments. Finally, I describe proof tactics I developed, that make it possible to automatically prove certain classes of equalities in the study of rings. By applying these, many manual and tedious calculation steps can be left to the computer. The outcome of this research was not merely to extend the list of theorems available in Mathlib, but to enrich the possibilities of effectively formalizing mathematics.",
+keywords = "formal math, dependent type theory, algebraic number theory, commutative algebra, algebraic hierarchy, Lean, Mathlib",
+author = "Anne Baanen",
+year = "2024",
+month = jan,
+day = "29",
+doi = "10.5463/thesis.541",
+language = "English",
+type = "PhD-Thesis - Research and graduation internal",
+school = "Vrije Universiteit Amsterdam",
+}
+
+@misc{commelin,
+      title={Abstraction boundaries and spec driven development in pure mathematics}, 
+      author={Johan Commelin and Adam Topaz},
+      year={2023},
+      eprint={2309.14870},
+      archivePrefix={arXiv},
+      primaryClass={math.HO},
+      url={https://arxiv.org/abs/2309.14870}, 
 }
 
 @misc{mathcomp,

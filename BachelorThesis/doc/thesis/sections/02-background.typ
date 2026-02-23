@@ -8,7 +8,7 @@ This section presents the necessary mathematical and technical background for th
 We recall some basic definitions from group theory.
 
 A _group_ is a set $G$ together with a binary operation
-$dot.op : G times G arrow.r G$ satisfying the following axioms: associativity for all $g in G$, $(g_1 dot g_2) dot g_3 = g_1 dot (g_2 dot g_3)$; the existence of a neutral element $e_G$; the existence of an inverse element $g^(-1)$. If all elements of a group also satisfy commutativity, then it is called _abelian group_ or _commutative group_. The _cardlinality_ of a group $G$, denoted as $|G|$, is defined as the cardinality of its underlying set. A group is finite if $|G| < infinity$, and infinite otherwise. The _order of an element_ $g in G$ is the smallest positive integer $n$ such that $g^n = e_G$, it is infinite if no such integer exist. 
+$dot.op : G times G arrow.r G$ satisfying the following axioms: associativity for all $g in G$, $(g_1 dot g_2) dot g_3 = g_1 dot (g_2 dot g_3)$; the existence of a neutral element $e_G$; the existence of an inverse element $g^(-1)$. If all elements of a group also satisfy commutativity, then it is called _abelian group_ or _commutative group_. The _cardinality_ of a group $G$, denoted as $|G|$, is defined as the cardinality of its underlying set. A group is finite if $|G| < infinity$, and infinite otherwise. The _order of an element_ $g in G$ is the smallest positive integer $n$ such that $g^n = e_G$, it is infinite if no such integer exist. 
 
 A _group homomorphism_ is a function between groups $f : G arrow.r H$ that preserves the group operation: for all $x,y in G$, $f(x dot y) = f(x) dot_H f(y)$. A homomorphism $g$ is called a left inverse of $f$ if
 $g compose f = id_G$, and a right inverse if

@@ -63,7 +63,7 @@ variable (s : Set G)
 theorem lagrange_divide : Fintype.card H ∣ Fintype.card G := by sorry
 -- this is proved in file Mathlib.GroupTheory.Coset.Card
 noncomputable instance : Fintype (a • (H : Set G) : Set G) := by (expose_names; apply Fintype.ofFinite )
-theorem lagrange_coset : Fintype.card G / Fintype.card H = Fintype.card (a • (H : Set G) : Set G) := by sorry
+theorem lagrange_coset : Fintype.card G / Fintype.card H = Fintype.card (a • (H ) : Set G) := by sorry
 
 end lagrange
 
