@@ -15,8 +15,8 @@ It is built on top of *mathlib*, using its existing formalization of group theor
 ## Theorems
 
 - AbelianSimpleG (from exercise 3.4.1): without the premises that _G_ is *finite*.
- - The illustration code in paper is from [this commit](https://github.com/leanprover-community/mathlib4/pull/32152/changes/5ce5135ddcfd86db3ae6cccf11b420310cbb9266)
+  - The illustration code in paper is from [this commit](https://github.com/leanprover-community/mathlib4/pull/32152/changes/5ce5135ddcfd86db3ae6cccf11b420310cbb9266)
 - HallSubgroup (from exercise 3.3.10): concerning the definitions of _Hall Subgroup_ and orders
-  - Illustration code is in the file BachelorThesis/code-original/HallSubgroup.G
+  - Illustration code is in the file [BachelorThesis/code-original/HallSubgroup.G](https://github.com/Lingyin00/ba-proj/blob/main/BachelorThesis/code-original/HallSubgroup.lean)
 
 
