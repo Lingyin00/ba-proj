@@ -2,7 +2,7 @@
 
 = Background
 
-This section presents the necessary mathematical and technical background for the subsequent formalization, including essential notions from group theory, key mechanisms of Lean, and an overview of the mathlib environment.
+This section presents the necessary mathematical and technical background for the subsequent formalization, including essential notions from group theory, key mechanisms of Lean, and an overview of the Mathlib environment.
 
 == Group Theory
 We recall some basic definitions from group theory.
@@ -10,7 +10,7 @@ We recall some basic definitions from group theory.
 A _group_ is a set $G$ together with a binary operation
 $dot.op : G times G arrow.r G$ satisfying the following axioms: associativity for all $g in G$, $(g_1 dot g_2) dot g_3 = g_1 dot (g_2 dot g_3)$; the existence of a neutral element $e_G$; the existence of an inverse element $g^(-1)$. If all elements of a group also satisfy commutativity, then it is called _abelian group_ or _commutative group_. The _cardlinality_ of a group $G$, denoted as $|G|$, is defined as the cardinality of its underlying set. A group is finite if $|G| < infinity$, and infinite otherwise. The _order of an element_ $g in G$ is the smallest positive integer $n$ such that $g^n = e_G$, it is infinite if no such integer exist. 
 
-A _group homomorphism_ is a function between groups $f : G arrow.r H$ that preserves the group operation: for all $x,y in G$ $f(x dot y) = f(x) dot_H f(y)$. A homomorphism $g$ is called a left inverse of $f$ if
+A _group homomorphism_ is a function between groups $f : G arrow.r H$ that preserves the group operation: for all $x,y in G$, $f(x dot y) = f(x) dot_H f(y)$. A homomorphism $g$ is called a left inverse of $f$ if
 $g compose f = id_G$, and a right inverse if
 $f compose g = id_H$, where $id_G$ and $id_H$ denote the identity maps
 on $G$ and $H$, respectively. The _kernel_ of a homomorphism, is defined as $ker(f) = {g in G| f(g) = e_H}$. An _isomorphism_ is a homomorphism with a left and a right inverse. When two groups are _isomorphic_, denoted as $G_1 tilde.equiv G_2,$ they have the same group theoretic structure. 
@@ -49,37 +49,48 @@ theorem lagrange {G : Type*} [Group G] [Fintype G] (H : Subgroup G) :
 ```
 In the example above, the name of this theorem is `lagrange`. The expression between the name and colon specify the parameters and assumptions, and the type of this theorem is expressed between the colon and colon equals. Then the colon equals introduces the proof, and the code following it constitutes the corresponding proof term. When the keyword `by` is used, the proof is written in tactic mode@Avigad2018. Tactics are tools that facilitate the construction of proof terms. When a tactic is applied, we can observe in the `Info-View` of our editor that the proof state has been modified.
 
-In Lean, parameters enclosed in parentheses denote explicit arguments, such as `(H : Subgroup G)`, which must be provided by the user when invoking a definition or theorem. In contrast, parameters enclosed in curly braces, such as `{G : Type*}`, denote implicit arguments, meaning that Lean attempts to infer them from the context. Square brackets indicate type class parameters, for instance `[Group G]`, which trigger Lean’s instance inference mechanism.
+In Lean, parameters enclosed in parentheses denote explicit arguments, such as `(H : Subgroup G)`, which must be provided by the user when invoking a definition or theorem. In contrast, parameters enclosed in curly braces, such as `{G : Type*}`, denote implicit arguments, meaning that Lean attempts to infer them from the context. Square brackets indicate _type class_ parameters, for instance `[Group G]`, which trigger Lean’s instance inference mechanism.
 
-_Type classes_ make a bundle of overloaded operations together with their types to achieve _ad-hoc polymorphism_@lean4_ref, which means the overloaded operations may have different implementations for different types. In this thesis, they are primarily used to represent algebraic structures together with the axioms they satisfy. In the example above, when the implicit type class parameter `[Group G]` is declared, this indicates that the type `G` is equipped with a group structure. Lean then attempts to synthesize a suitable instance from the environment. Once such an instance is found, all associated operations, inherited structure, and available lemmas become accessible for `G`, without requiring them to be restated explicitly.
+Type classes make a bundle of overloaded operations together with their types to achieve _ad-hoc polymorphism_@wadler, which means the overloaded operations may have different implementations for different types@lean4_ref. In this thesis, they are primarily used to represent algebraic structures together with the axioms they satisfy. In the example above, when the implicit type class parameters `[Group G]` and `[Fintype G]` are declared, it indicates that the type `G` is equipped with a finite group structure. Lean then attempts to synthesize a suitable instance from the environment. Once such an instance is found, all associated operations, inherited structure, and available lemmas become accessible for `G`, without requiring them to be restated explicitly.
 
 Another important mechanism named _coercion_, which allows a term of one type to be automatically interpreted as a term of another type via a registered map, whenever the surrounding context expects the target type@lean4_ref. For instance from `Nat` to `Int`, here Lean automatically inserts the canonical embedding `Nat → Int`:
 
 ```lean example (n : Nat) : Int := n``` 
 
-Coercions are also heavily used in algebraic structures, where sometimes we need to to it manually, like in the example above: 
+Coercions are also heavily used in algebraic structures. Sometimes we need to to it manually, like in the example above: 
 
-```lean (a • (H : Set G) : Set G)```,
+```lean (a • H : Set G)```,
 where the subgroup `H : Subgroup G` is explicitly coerced to its underlying set `H : Set G`.
 
 
 == Mathlib 
--- TODO: talk about the algebraic hierarchy@use-and-abuse
-
-Mathlib is currently one of the biggest formal math library, containing extensive subjects@undergrad_math. However, rather than being merely a large collection of formalized theorems, mathlib is shaped by a design philosophy centered on abstraction, generalization and systematic reuse through typeclass inference. The library favors small composable lemmas that act as bridges, enabling the construction of more complex results in a modular way@baanen2025. The design philosophy becomes particularly visible in its algebraic hierarchy, where algebraic structures are not defined independently, but through several layers by using type classes. A representative example is the definition of a group in mathlib:
+Mathlib is currently one of the largest formal mathematics libraries, covering a wide range of mathematical topics@undergrad_math. It is organized in a highly structured and systematic way, rather than being merely a large collection of formalized theorems@mathlib_paper. Many mathematical results are formulated in library as small composable lemmas that serve as bridges, allowing more complex constructions to be built modularly through type class inference@use-and-abuse. This design becomes particularly visible how algebraic hierarchy is expressed in Mathlib, where algebraic structures are not defined independently, but through several layers by using type classes. A representative example is the Mathlib definition of a group:
 ```lean
 class Group (G : Type u) extends DivInvMonoid G where
   protected inv_mul_cancel : ∀ a : G, a⁻¹ * a = 1
 ```
-Here the keyword `class` defines `Group` as a type class, whose instances can be automatically inferred by Lean. Morover, the keyword `extends` indicates that `Group` inherits all operations and lemmas associated with a more primitive structure `DivInvMonid`: 
+The keyword `extends` declares that every instance of `Group G` is at the same time an instance of `DivInvMonoid G` with an extra axiom `inv_mul_cancel`. Consequently, whenever `[Group G]` is available, Lean can also use it as an instance of `DivInvMonoid G` via type class inference. `DivInvMonoid` is defined as: 
 ```lean
-class DivInvMonoid (G : Type u) extends Monoid G, Inv G, Div G : Type u
+class DivInvMonoid (G : Type u) extends Monoid G, Inv G, Div G where
+  protected div := DivInvMonoid.div'
+  protected div_eq_mul_inv : ∀ a b : G, a / b = a * b⁻¹ := by intros; rfl
+  protected zpow : ℤ → G → G := zpowRec npowRec
+  protected zpow_succ' (n : ℕ) (a : G) : zpow n.succ a = zpow n a * a := by
+    intros; rfl
+  protected zpow_neg' (n : ℕ) (a : G) : zpow (Int.negSucc n) a = 
+    (zpow n.succ a)⁻¹ := by intros; rfl
 ```
-It is a type class inheriting from `Monoid`, while `Inv G` and `Div G` introduce inverse operation and the division without redefining a new `G`. The classes `Inv G` and `Div G` originate from the `Init/Prelude`, the first file in the Lean import hierarchy. This reflects the fact that algebraic hierarchy in mathlib is constructed incrementally from foundational operational structures provided by the core language.
+The declaration above shows that `DivInvMonoid G` extends three type classes:
+  - `Monoid G`, providing multiplication, the identity element, and the corresponding axioms;
+  - `Inv G`, providing the operation `inv : G → G`
+  - `Div G`, providing the operation `div : G → G → G`
+Thus, an instance of `DivInvMonoid G` contains, as part of its data, instances of all three structures. In particular, the definition in axiom `div_eq_mul_inv`:  
+`a / b = a * b⁻¹`
+shows that division is implemented as multiplication by the inverse. This example shows that new operations can defined by reusing existing ones within the hierarchy.
 
-The development of mathlib is a collaborative, community-driven process involving contributors from around the world. Contributions are submitted via pull request and undergo rigorous code view by maintainers and viewers. To ensure the quality of code, a pull request often goes through several rounds of refinements, generalizations and modifications before being merged. Consequently, formalization in mathlib is not only a mathematical formalization activity, but also an interaction with an evolving infrastructural system.
+The development of Mathlib is a collaborative, community-driven process involving contributors from around the world. Contributions are submitted via pull request and undergo rigorous code view by maintainers and viewers@baanen2025. To ensure the quality of code, a pull request often goes through several rounds of refinements, generalizations and modifications before being merged. Consequently, formalization in Mathlib is not only a mathematical formalization activity, but also an interaction with an evolving infrastructural system.
 
-Due to the scale and complexity of the library, efficient navigation becomes an important skill in this project. Locating lemmas is crucial to avoid duplication and to reuse established results. The mathlib documentation@doc_mathlib usually serves as the primary entry point. It is organized into thematic cateogories such as `GroupTheory`, `FieldTheory`, each containing several more specialized subtopics. For instance, `Coset`, `Subgroup`, `QuotientGroup` are subtopics under `GroupTheory`. Furthermore, under each subtopic, definitions are collected into section `Defs`, basic theories are placed into `Basic`, and the core results are into other labels. Using the mathlib documentation to locate a lemma usually requires knowing the name of the lemma. While during the formalization process, the name of a lemma might not always be obvious. Tools such as _LeanSearch_ @lean_search allows us to find lemmas without fully knowing their names, while interatcive tactic like `apply?` can give hints like a partial proof. In practice, most commonly needed results already exist within the library; thus, working within mathlib often involves identifying and adapting existing components rather than constructing proofs entirely from scratch.
+Due to the scale and complexity of the library, efficient navigation becomes an important skill in this project. Locating lemmas is crucial to avoid duplication and to reuse established results. The Mathlib documentation@doc_mathlib usually serves as my primary entry point. It is organized into thematic categories such as `GroupTheory`, `FieldTheory`, each containing several more specialized subtopics. For instance, `Coset`, `Subgroup`, `QuotientGroup` are subtopics under `GroupTheory`. Furthermore, under each subtopic, definitions are collected into  `Defs`, basic theories are placed into `Basic`, and the core results are into other labels. Using the Mathlib documentation to locate a lemma usually requires knowing the name of the lemma. Some lemmas follow naming patterns like `add_succ` and `succ_add`, while during this formalization process, the name of a lemma is not always be obvious. Tools such as _LeanSearch_ @lean_search allows us to find lemmas without full knowledge of their names,, while interatcive tactics such as `apply?` can give us hints like a partial proof. Although many commonly used results are already available in Mathlib, the development of a formal proof frequently requires introducing auxiliary lemmas tailored to the specific context.
 
 
 

@@ -1,6 +1,16 @@
-= Conclusion
+= Conclusion and Future Work
 This thesis examined how classical group-theoretic arguments change when translated into machine-checked proofs in Lean. Rather than serving as a direct transcription of textbook reasoning, the formalization process revealed itself as an exercise in structural clarification. Implicit dependencies had to be made explicit, informal strategies reorganized, and arguments aligned with the abstraction level of the existing library.
 
 The case studies demonstrate that, in algebraic settings, successful formalization depends less on automation and more on architectural coherence. Choosing appropriate structural lemmas and understanding the interaction between algebraic hierarchies proved more decisive than tactical proof search.
 
-Beyond verification, the project suggests that formalization can function as a method of math learning. By enforcing precision and exposing structural dependencies, it reshapes one’s understanding of familiar mathematics and highlights the architectural features underlying classical arguments.
+Beyond proving theorems, the project suggests that formalization can function as a method of math learning. By enforcing precision and exposing structural dependencies, it reshapes one’s understanding of familiar mathematics and highlights the architectural features underlying classical arguments.
+
+The formal development also highlights several directions for further refinement of the existing library.
+
+First, during the treatment of the quotient case, it became necessary to establish multiplicative relations involving `relIndex`, such as `H.relIndex = (H ⊔ N).index * H.relIndex N`. which express the interaction between lattice operations and index multiplicativity under normality. While Mathlib provides many results relating indices and normal subgroups, a more symmetric and systematic treatment of relative indices could further streamline similar arguments. Developing such lemmas in a more general form may therefore constitute a natural extension of the present work. 
+
+Second, the cardinal formulation of the second isomorphism theorem proved particularly useful in bridging structural isomorphisms and numerical index computations. Results of the form $|H \/ (H inter.sq N)| = |H N \/ N|$ serve as essential connectors between group-theoretic structure and divisibility arguments. A broader collection of cardinal versions of classical isomorphism theorems could facilitate index-based reasoning and simplify formal proofs that rely on compatibility between lattice operations and quotient constructions.
+
+Another possible direction for future development concerns the handling of coercions between subgroups of different ambient groups. In several proofs, explicit constructions such as `subgroupOf` were required to transport subgroups across lattice operations and quotient constructions. While mathematicians typically treat such identifications implicitly, Lean’s type system forces them to be made explicit. Developing automation or a more systematic framework to alleviate this friction could significantly make similar formalizations smoothier in the future.
+
+Together, I believe these directions point toward a more systematic integration of lattice-theoretic structure and cardinal arithmetic in the subgroup API, which would benefit future formalizations in finite group theory. 
