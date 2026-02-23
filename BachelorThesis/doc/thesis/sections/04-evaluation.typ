@@ -69,7 +69,7 @@ Moreover, when working with nested subgroups, such as $H inter.sq K <= K <= G$, 
 
 ```lean noncomputable def relIndex : ℕ := (H.subgroupOf K).index```
 
-This expresses the index of a subgroup relative to a larger subgroup within the same ambient group, where `subgroupOf` is a design in Lean which treats $H inter.sq K$ as a subgroup of $K$. As a result, in our first Hall subgroup theorem the $|N : H inter.sq N| $ could be written as `H.relIndex N`. 
+This expresses the index of a subgroup relative to a larger subgroup within the same ambient group, where `subgroupOf` is a design in Lean which treats $H inter.sq K$ as a subgroup of $K$. As a result, in the first Hall subgroup theorem the $|N : H inter.sq N| $ could be written as `H.relIndex N`. 
 === The Subgroup API and Lattice Structure
 One may notice that the intersection of two subgroups $H$ and $N$ is expressed using the meet operation $inter.sq$ rather than by directly referring to the intersection of their underlying sets. This reflects the fact that `Subgroup G` forms a lattice structure under the subgroup partial order.
 
@@ -84,7 +84,7 @@ def inter_of_subHN {G : Type*} [Group G]
 where I use the `comap` and `subtype` manually transport $H inter.sq N$ from the original type Subgroup $G$ into the ambient group Subgroup $N$. While this construction is mathematically correct and accepted by Lean, it reimplements a structural translation that is already captured by the existing abstraction in Mathlib. The manual transport via `comap` becomes unnecessary. The subgroup API, together with the lattice structure and `relIndex`, provides a higher-level interface for reasoning about relative subgroups.  
 
 === The First and Second Isomorphism Theorem
-Although it is not immediately clear how the first and second isomorphism theorems would enter our formal proof, I examine their formulations in Mathlib. The two Hall subgroup lemmas appear as exercises in the same chapter's section of Dummit and Foote, which suggests that structural considerations may be relevant to their proof strategies. This motivates a closer inspection of the corresponding formal statements.
+Although it is not immediately clear how the first and second isomorphism theorems would enter the formal proof, I examine their formulations in Mathlib. The two Hall subgroup lemmas appear as exercises in the same chapter's section of Dummit and Foote, which suggests that structural considerations may be relevant to their proof strategies. This motivates a closer inspection of the corresponding formal statements.
 
 In Mathlib, the first and second isomorphism theorems are represented purely structurally:
 ```lean
@@ -224,7 +224,7 @@ Thus the proof skeleton is constructed by two division goals and three proof ter
     sorry -- proof omitted
   exact Nat.Coprime.of_dvd thisI thisII hH
 ```
-The proof of `have I` is done by lemma `Subgroup.index_map_eq`, where I use the canonical quotient map `let f : G →* (G ⧸ N) := QuotientGroup.mk' N` to prove that the index stays the same if I project the elements of `H ⊔ N` into quotient group `G ⧸ N`. After that I use the subgroup relation `H ≤ H ⊔ N` to get our first division. The Proof of `thisII` needs some additional treatment due to dependent types: the cardinality of a group should stay the same no matter whether it is seen as a subgroup A or as subgroup B. I use a lemma to establish this property, and present its whole proof here, since there're several points I want to illustrate:
+The proof of `have I` is done by lemma `Subgroup.index_map_eq`, where I use the canonical quotient map `let f : G →* (G ⧸ N) := QuotientGroup.mk' N` to prove that the index stays the same if I project the elements of `H ⊔ N` into quotient group `G ⧸ N`. After that I use the subgroup relation `H ≤ H ⊔ N` to get the first division. The Proof of `thisII` needs some additional treatment due to dependent types: the cardinality of a group should stay the same no matter whether it is seen as a subgroup A or as subgroup B. I use a lemma to establish this property, and present its whole proof here, since there're several points I want to illustrate:
 ```lean
 lemma card_supQuotient_eq_card_map
     {G : Type*} [Group G] [Fintype G]
